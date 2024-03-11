@@ -2,809 +2,1233 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    AND
+    BREAK
+    CONTINUE
     DECIMAL
+    DIF
+    EQEQUAL
+    GREATER
+    GREATER_T
+    IF
     INT
+    LESS
+    LESS_T
+    L_KEY
+    OR
+    RETURN
+    R_KEY
+    WHILE
 
 Grammar
 
-Rule 0     S' -> instructions
-Rule 1     instructions -> instructions instruction
-Rule 2     instructions -> instruction
-Rule 3     instruction -> CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON
-Rule 4     instruction -> VAR ID COLON type EQUAL expression SEMICOLON
-Rule 5     type -> NUMBER
-Rule 6     type -> FLOAT
-Rule 7     type -> STRING
-Rule 8     type -> BOOL
-Rule 9     expressionList -> expressionList COMMA expression
-Rule 10    expressionList -> expression
-Rule 11    expression -> expression PLUS expression
-Rule 12    expression -> expression MINUS expression
-Rule 13    expression -> expression BY expression
-Rule 14    expression -> expression DIVISION expression
-Rule 15    expression -> L_PAR expression R_PAR
-Rule 16    expression -> NUMBER
-Rule 17    expression -> STRING
-Rule 18    expression -> listArray
-Rule 19    listArray -> listArray DOT ID
-Rule 20    listArray -> listArray listAccessArray
-Rule 21    listArray -> ID
-Rule 22    listAccessArray -> listAccessArray L_BRACKET expression R_BRACKET
-Rule 23    listAccessArray -> L_BRACKET expression R_BRACKET
+Rule 0     S' -> s
+Rule 1     s -> block
+Rule 2     block -> block instruction
+Rule 3     block -> instruction
+Rule 4     instruction -> print
+Rule 5     instruction -> declaration
+Rule 6     instruction -> assignment
+Rule 7     print -> CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON
+Rule 8     declaration -> VAR ID COLON type EQUAL expression SEMICOLON
+Rule 9     declaration -> VAR ID EQUAL expression SEMICOLON
+Rule 10    declaration -> VAR ID COLON type SEMICOLON
+Rule 11    declaration -> CONST ID COLON type EQUAL expression SEMICOLON
+Rule 12    declaration -> CONST ID EQUAL expression SEMICOLON
+Rule 13    assignment -> ID EQUAL expression SEMICOLON
+Rule 14    type -> NUMBER
+Rule 15    type -> FLOAT
+Rule 16    type -> STRING
+Rule 17    type -> BOOL
+Rule 18    expressionList -> expressionList COMMA expression
+Rule 19    expressionList -> expression
+Rule 20    expression -> expression PLUS expression
+Rule 21    expression -> expression MINUS expression
+Rule 22    expression -> expression BY expression
+Rule 23    expression -> expression DIVISION expression
+Rule 24    expression -> L_PAR expression R_PAR
+Rule 25    expression -> NUMBER
+Rule 26    expression -> STRING
+Rule 27    expression -> FLOAT
+Rule 28    expression -> listArray
+Rule 29    expression -> L_BRACKET expressionList R_BRACKET
+Rule 30    listArray -> listArray L_BRACKET expression R_BRACKET
+Rule 31    listArray -> listArray DOT ID
+Rule 32    listArray -> ID
 
 Terminals, with rules where they appear
 
-BOOL                 : 8
-BY                   : 13
-COLON                : 4
-COMMA                : 9
-CONSOLE              : 3
+AND                  : 
+BOOL                 : 17
+BREAK                : 
+BY                   : 22
+COLON                : 8 10 11
+COMMA                : 18
+CONSOLE              : 7
+CONST                : 11 12
+CONTINUE             : 
 DECIMAL              : 
-DIVISION             : 14
-DOT                  : 3 19
-EQUAL                : 4
-FLOAT                : 6
-ID                   : 4 19 21
+DIF                  : 
+DIVISION             : 23
+DOT                  : 7 31
+EQEQUAL              : 
+EQUAL                : 8 9 11 12 13
+FLOAT                : 15 27
+GREATER              : 
+GREATER_T            : 
+ID                   : 8 9 10 11 12 13 31 32
+IF                   : 
 INT                  : 
-LOG                  : 3
-L_BRACKET            : 22 23
-L_PAR                : 3 15
-MINUS                : 12
-NUMBER               : 5 16
-PLUS                 : 11
-R_BRACKET            : 22 23
-R_PAR                : 3 15
-SEMICOLON            : 3 4
-STRING               : 7 17
-VAR                  : 4
+LESS                 : 
+LESS_T               : 
+LOG                  : 7
+L_BRACKET            : 29 30
+L_KEY                : 
+L_PAR                : 7 24
+MINUS                : 21
+NUMBER               : 14 25
+OR                   : 
+PLUS                 : 20
+RETURN               : 
+R_BRACKET            : 29 30
+R_KEY                : 
+R_PAR                : 7 24
+SEMICOLON            : 7 8 9 10 11 12 13
+STRING               : 16 26
+VAR                  : 8 9 10
+WHILE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-expression           : 4 9 10 11 11 12 12 13 13 14 14 15 22 23
-expressionList       : 3 9
-instruction          : 1 2
-instructions         : 1 0
-listAccessArray      : 20 22
-listArray            : 18 19 20
-type                 : 4
+assignment           : 6
+block                : 1 2
+declaration          : 5
+expression           : 8 9 11 12 13 18 19 20 20 21 21 22 22 23 23 24 30
+expressionList       : 7 18 29
+instruction          : 2 3
+listArray            : 28 30 31
+print                : 4
+s                    : 0
+type                 : 8 10 11
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . instructions
-    (1) instructions -> . instructions instruction
-    (2) instructions -> . instruction
-    (3) instruction -> . CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON
-    (4) instruction -> . VAR ID COLON type EQUAL expression SEMICOLON
+    (0) S' -> . s
+    (1) s -> . block
+    (2) block -> . block instruction
+    (3) block -> . instruction
+    (4) instruction -> . print
+    (5) instruction -> . declaration
+    (6) instruction -> . assignment
+    (7) print -> . CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON
+    (8) declaration -> . VAR ID COLON type EQUAL expression SEMICOLON
+    (9) declaration -> . VAR ID EQUAL expression SEMICOLON
+    (10) declaration -> . VAR ID COLON type SEMICOLON
+    (11) declaration -> . CONST ID COLON type EQUAL expression SEMICOLON
+    (12) declaration -> . CONST ID EQUAL expression SEMICOLON
+    (13) assignment -> . ID EQUAL expression SEMICOLON
 
-    CONSOLE         shift and go to state 3
-    VAR             shift and go to state 4
+    CONSOLE         shift and go to state 7
+    VAR             shift and go to state 8
+    CONST           shift and go to state 10
+    ID              shift and go to state 9
 
-    instructions                   shift and go to state 1
-    instruction                    shift and go to state 2
+    s                              shift and go to state 1
+    block                          shift and go to state 2
+    instruction                    shift and go to state 3
+    print                          shift and go to state 4
+    declaration                    shift and go to state 5
+    assignment                     shift and go to state 6
 
 state 1
 
-    (0) S' -> instructions .
-    (1) instructions -> instructions . instruction
-    (3) instruction -> . CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON
-    (4) instruction -> . VAR ID COLON type EQUAL expression SEMICOLON
+    (0) S' -> s .
 
-    CONSOLE         shift and go to state 3
-    VAR             shift and go to state 4
 
-    instruction                    shift and go to state 5
 
 state 2
 
-    (2) instructions -> instruction .
+    (1) s -> block .
+    (2) block -> block . instruction
+    (4) instruction -> . print
+    (5) instruction -> . declaration
+    (6) instruction -> . assignment
+    (7) print -> . CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON
+    (8) declaration -> . VAR ID COLON type EQUAL expression SEMICOLON
+    (9) declaration -> . VAR ID EQUAL expression SEMICOLON
+    (10) declaration -> . VAR ID COLON type SEMICOLON
+    (11) declaration -> . CONST ID COLON type EQUAL expression SEMICOLON
+    (12) declaration -> . CONST ID EQUAL expression SEMICOLON
+    (13) assignment -> . ID EQUAL expression SEMICOLON
 
-    CONSOLE         reduce using rule 2 (instructions -> instruction .)
-    VAR             reduce using rule 2 (instructions -> instruction .)
-    $end            reduce using rule 2 (instructions -> instruction .)
+    $end            reduce using rule 1 (s -> block .)
+    CONSOLE         shift and go to state 7
+    VAR             shift and go to state 8
+    CONST           shift and go to state 10
+    ID              shift and go to state 9
 
+    instruction                    shift and go to state 11
+    print                          shift and go to state 4
+    declaration                    shift and go to state 5
+    assignment                     shift and go to state 6
 
 state 3
 
-    (3) instruction -> CONSOLE . DOT LOG L_PAR expressionList R_PAR SEMICOLON
+    (3) block -> instruction .
 
-    DOT             shift and go to state 6
+    CONSOLE         reduce using rule 3 (block -> instruction .)
+    VAR             reduce using rule 3 (block -> instruction .)
+    CONST           reduce using rule 3 (block -> instruction .)
+    ID              reduce using rule 3 (block -> instruction .)
+    $end            reduce using rule 3 (block -> instruction .)
 
 
 state 4
 
-    (4) instruction -> VAR . ID COLON type EQUAL expression SEMICOLON
+    (4) instruction -> print .
 
-    ID              shift and go to state 7
+    CONSOLE         reduce using rule 4 (instruction -> print .)
+    VAR             reduce using rule 4 (instruction -> print .)
+    CONST           reduce using rule 4 (instruction -> print .)
+    ID              reduce using rule 4 (instruction -> print .)
+    $end            reduce using rule 4 (instruction -> print .)
 
 
 state 5
 
-    (1) instructions -> instructions instruction .
+    (5) instruction -> declaration .
 
-    CONSOLE         reduce using rule 1 (instructions -> instructions instruction .)
-    VAR             reduce using rule 1 (instructions -> instructions instruction .)
-    $end            reduce using rule 1 (instructions -> instructions instruction .)
+    CONSOLE         reduce using rule 5 (instruction -> declaration .)
+    VAR             reduce using rule 5 (instruction -> declaration .)
+    CONST           reduce using rule 5 (instruction -> declaration .)
+    ID              reduce using rule 5 (instruction -> declaration .)
+    $end            reduce using rule 5 (instruction -> declaration .)
 
 
 state 6
 
-    (3) instruction -> CONSOLE DOT . LOG L_PAR expressionList R_PAR SEMICOLON
+    (6) instruction -> assignment .
 
-    LOG             shift and go to state 8
+    CONSOLE         reduce using rule 6 (instruction -> assignment .)
+    VAR             reduce using rule 6 (instruction -> assignment .)
+    CONST           reduce using rule 6 (instruction -> assignment .)
+    ID              reduce using rule 6 (instruction -> assignment .)
+    $end            reduce using rule 6 (instruction -> assignment .)
 
 
 state 7
 
-    (4) instruction -> VAR ID . COLON type EQUAL expression SEMICOLON
+    (7) print -> CONSOLE . DOT LOG L_PAR expressionList R_PAR SEMICOLON
 
-    COLON           shift and go to state 9
+    DOT             shift and go to state 12
 
 
 state 8
 
-    (3) instruction -> CONSOLE DOT LOG . L_PAR expressionList R_PAR SEMICOLON
+    (8) declaration -> VAR . ID COLON type EQUAL expression SEMICOLON
+    (9) declaration -> VAR . ID EQUAL expression SEMICOLON
+    (10) declaration -> VAR . ID COLON type SEMICOLON
 
-    L_PAR           shift and go to state 10
+    ID              shift and go to state 13
 
 
 state 9
 
-    (4) instruction -> VAR ID COLON . type EQUAL expression SEMICOLON
-    (5) type -> . NUMBER
-    (6) type -> . FLOAT
-    (7) type -> . STRING
-    (8) type -> . BOOL
+    (13) assignment -> ID . EQUAL expression SEMICOLON
 
-    NUMBER          shift and go to state 12
-    FLOAT           shift and go to state 13
-    STRING          shift and go to state 14
-    BOOL            shift and go to state 15
+    EQUAL           shift and go to state 14
 
-    type                           shift and go to state 11
 
 state 10
 
-    (3) instruction -> CONSOLE DOT LOG L_PAR . expressionList R_PAR SEMICOLON
-    (9) expressionList -> . expressionList COMMA expression
-    (10) expressionList -> . expression
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MINUS expression
-    (13) expression -> . expression BY expression
-    (14) expression -> . expression DIVISION expression
-    (15) expression -> . L_PAR expression R_PAR
-    (16) expression -> . NUMBER
-    (17) expression -> . STRING
-    (18) expression -> . listArray
-    (19) listArray -> . listArray DOT ID
-    (20) listArray -> . listArray listAccessArray
-    (21) listArray -> . ID
+    (11) declaration -> CONST . ID COLON type EQUAL expression SEMICOLON
+    (12) declaration -> CONST . ID EQUAL expression SEMICOLON
 
-    L_PAR           shift and go to state 16
-    NUMBER          shift and go to state 19
-    STRING          shift and go to state 20
-    ID              shift and go to state 22
+    ID              shift and go to state 15
 
-    expressionList                 shift and go to state 17
-    expression                     shift and go to state 18
-    listArray                      shift and go to state 21
 
 state 11
 
-    (4) instruction -> VAR ID COLON type . EQUAL expression SEMICOLON
+    (2) block -> block instruction .
 
-    EQUAL           shift and go to state 23
+    CONSOLE         reduce using rule 2 (block -> block instruction .)
+    VAR             reduce using rule 2 (block -> block instruction .)
+    CONST           reduce using rule 2 (block -> block instruction .)
+    ID              reduce using rule 2 (block -> block instruction .)
+    $end            reduce using rule 2 (block -> block instruction .)
 
 
 state 12
 
-    (5) type -> NUMBER .
+    (7) print -> CONSOLE DOT . LOG L_PAR expressionList R_PAR SEMICOLON
 
-    EQUAL           reduce using rule 5 (type -> NUMBER .)
+    LOG             shift and go to state 16
 
 
 state 13
 
-    (6) type -> FLOAT .
+    (8) declaration -> VAR ID . COLON type EQUAL expression SEMICOLON
+    (9) declaration -> VAR ID . EQUAL expression SEMICOLON
+    (10) declaration -> VAR ID . COLON type SEMICOLON
 
-    EQUAL           reduce using rule 6 (type -> FLOAT .)
+    COLON           shift and go to state 17
+    EQUAL           shift and go to state 18
 
 
 state 14
 
-    (7) type -> STRING .
+    (13) assignment -> ID EQUAL . expression SEMICOLON
+    (20) expression -> . expression PLUS expression
+    (21) expression -> . expression MINUS expression
+    (22) expression -> . expression BY expression
+    (23) expression -> . expression DIVISION expression
+    (24) expression -> . L_PAR expression R_PAR
+    (25) expression -> . NUMBER
+    (26) expression -> . STRING
+    (27) expression -> . FLOAT
+    (28) expression -> . listArray
+    (29) expression -> . L_BRACKET expressionList R_BRACKET
+    (30) listArray -> . listArray L_BRACKET expression R_BRACKET
+    (31) listArray -> . listArray DOT ID
+    (32) listArray -> . ID
 
-    EQUAL           reduce using rule 7 (type -> STRING .)
+    L_PAR           shift and go to state 21
+    NUMBER          shift and go to state 22
+    STRING          shift and go to state 23
+    FLOAT           shift and go to state 24
+    L_BRACKET       shift and go to state 26
+    ID              shift and go to state 19
 
+    expression                     shift and go to state 20
+    listArray                      shift and go to state 25
 
 state 15
 
-    (8) type -> BOOL .
+    (11) declaration -> CONST ID . COLON type EQUAL expression SEMICOLON
+    (12) declaration -> CONST ID . EQUAL expression SEMICOLON
 
-    EQUAL           reduce using rule 8 (type -> BOOL .)
+    COLON           shift and go to state 27
+    EQUAL           shift and go to state 28
 
 
 state 16
 
-    (15) expression -> L_PAR . expression R_PAR
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MINUS expression
-    (13) expression -> . expression BY expression
-    (14) expression -> . expression DIVISION expression
-    (15) expression -> . L_PAR expression R_PAR
-    (16) expression -> . NUMBER
-    (17) expression -> . STRING
-    (18) expression -> . listArray
-    (19) listArray -> . listArray DOT ID
-    (20) listArray -> . listArray listAccessArray
-    (21) listArray -> . ID
+    (7) print -> CONSOLE DOT LOG . L_PAR expressionList R_PAR SEMICOLON
 
-    L_PAR           shift and go to state 16
-    NUMBER          shift and go to state 19
-    STRING          shift and go to state 20
-    ID              shift and go to state 22
+    L_PAR           shift and go to state 29
 
-    expression                     shift and go to state 24
-    listArray                      shift and go to state 21
 
 state 17
 
-    (3) instruction -> CONSOLE DOT LOG L_PAR expressionList . R_PAR SEMICOLON
-    (9) expressionList -> expressionList . COMMA expression
+    (8) declaration -> VAR ID COLON . type EQUAL expression SEMICOLON
+    (10) declaration -> VAR ID COLON . type SEMICOLON
+    (14) type -> . NUMBER
+    (15) type -> . FLOAT
+    (16) type -> . STRING
+    (17) type -> . BOOL
 
-    R_PAR           shift and go to state 25
-    COMMA           shift and go to state 26
+    NUMBER          shift and go to state 31
+    FLOAT           shift and go to state 32
+    STRING          shift and go to state 33
+    BOOL            shift and go to state 34
 
+    type                           shift and go to state 30
 
 state 18
 
-    (10) expressionList -> expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MINUS expression
-    (13) expression -> expression . BY expression
-    (14) expression -> expression . DIVISION expression
+    (9) declaration -> VAR ID EQUAL . expression SEMICOLON
+    (20) expression -> . expression PLUS expression
+    (21) expression -> . expression MINUS expression
+    (22) expression -> . expression BY expression
+    (23) expression -> . expression DIVISION expression
+    (24) expression -> . L_PAR expression R_PAR
+    (25) expression -> . NUMBER
+    (26) expression -> . STRING
+    (27) expression -> . FLOAT
+    (28) expression -> . listArray
+    (29) expression -> . L_BRACKET expressionList R_BRACKET
+    (30) listArray -> . listArray L_BRACKET expression R_BRACKET
+    (31) listArray -> . listArray DOT ID
+    (32) listArray -> . ID
 
-    R_PAR           reduce using rule 10 (expressionList -> expression .)
-    COMMA           reduce using rule 10 (expressionList -> expression .)
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
-    BY              shift and go to state 29
-    DIVISION        shift and go to state 30
+    L_PAR           shift and go to state 21
+    NUMBER          shift and go to state 22
+    STRING          shift and go to state 23
+    FLOAT           shift and go to state 24
+    L_BRACKET       shift and go to state 26
+    ID              shift and go to state 19
 
+    expression                     shift and go to state 35
+    listArray                      shift and go to state 25
 
 state 19
 
-    (16) expression -> NUMBER .
+    (32) listArray -> ID .
 
-    PLUS            reduce using rule 16 (expression -> NUMBER .)
-    MINUS           reduce using rule 16 (expression -> NUMBER .)
-    BY              reduce using rule 16 (expression -> NUMBER .)
-    DIVISION        reduce using rule 16 (expression -> NUMBER .)
-    R_PAR           reduce using rule 16 (expression -> NUMBER .)
-    COMMA           reduce using rule 16 (expression -> NUMBER .)
-    SEMICOLON       reduce using rule 16 (expression -> NUMBER .)
-    R_BRACKET       reduce using rule 16 (expression -> NUMBER .)
+    L_BRACKET       reduce using rule 32 (listArray -> ID .)
+    DOT             reduce using rule 32 (listArray -> ID .)
+    SEMICOLON       reduce using rule 32 (listArray -> ID .)
+    PLUS            reduce using rule 32 (listArray -> ID .)
+    MINUS           reduce using rule 32 (listArray -> ID .)
+    BY              reduce using rule 32 (listArray -> ID .)
+    DIVISION        reduce using rule 32 (listArray -> ID .)
+    R_PAR           reduce using rule 32 (listArray -> ID .)
+    R_BRACKET       reduce using rule 32 (listArray -> ID .)
+    COMMA           reduce using rule 32 (listArray -> ID .)
 
 
 state 20
 
-    (17) expression -> STRING .
+    (13) assignment -> ID EQUAL expression . SEMICOLON
+    (20) expression -> expression . PLUS expression
+    (21) expression -> expression . MINUS expression
+    (22) expression -> expression . BY expression
+    (23) expression -> expression . DIVISION expression
 
-    PLUS            reduce using rule 17 (expression -> STRING .)
-    MINUS           reduce using rule 17 (expression -> STRING .)
-    BY              reduce using rule 17 (expression -> STRING .)
-    DIVISION        reduce using rule 17 (expression -> STRING .)
-    R_PAR           reduce using rule 17 (expression -> STRING .)
-    COMMA           reduce using rule 17 (expression -> STRING .)
-    SEMICOLON       reduce using rule 17 (expression -> STRING .)
-    R_BRACKET       reduce using rule 17 (expression -> STRING .)
+    SEMICOLON       shift and go to state 36
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    BY              shift and go to state 39
+    DIVISION        shift and go to state 40
 
 
 state 21
 
-    (18) expression -> listArray .
-    (19) listArray -> listArray . DOT ID
-    (20) listArray -> listArray . listAccessArray
-    (22) listAccessArray -> . listAccessArray L_BRACKET expression R_BRACKET
-    (23) listAccessArray -> . L_BRACKET expression R_BRACKET
+    (24) expression -> L_PAR . expression R_PAR
+    (20) expression -> . expression PLUS expression
+    (21) expression -> . expression MINUS expression
+    (22) expression -> . expression BY expression
+    (23) expression -> . expression DIVISION expression
+    (24) expression -> . L_PAR expression R_PAR
+    (25) expression -> . NUMBER
+    (26) expression -> . STRING
+    (27) expression -> . FLOAT
+    (28) expression -> . listArray
+    (29) expression -> . L_BRACKET expressionList R_BRACKET
+    (30) listArray -> . listArray L_BRACKET expression R_BRACKET
+    (31) listArray -> . listArray DOT ID
+    (32) listArray -> . ID
 
-    PLUS            reduce using rule 18 (expression -> listArray .)
-    MINUS           reduce using rule 18 (expression -> listArray .)
-    BY              reduce using rule 18 (expression -> listArray .)
-    DIVISION        reduce using rule 18 (expression -> listArray .)
-    R_PAR           reduce using rule 18 (expression -> listArray .)
-    COMMA           reduce using rule 18 (expression -> listArray .)
-    SEMICOLON       reduce using rule 18 (expression -> listArray .)
-    R_BRACKET       reduce using rule 18 (expression -> listArray .)
-    DOT             shift and go to state 31
-    L_BRACKET       shift and go to state 33
+    L_PAR           shift and go to state 21
+    NUMBER          shift and go to state 22
+    STRING          shift and go to state 23
+    FLOAT           shift and go to state 24
+    L_BRACKET       shift and go to state 26
+    ID              shift and go to state 19
 
-    listAccessArray                shift and go to state 32
+    expression                     shift and go to state 41
+    listArray                      shift and go to state 25
 
 state 22
 
-    (21) listArray -> ID .
+    (25) expression -> NUMBER .
 
-    DOT             reduce using rule 21 (listArray -> ID .)
-    L_BRACKET       reduce using rule 21 (listArray -> ID .)
-    PLUS            reduce using rule 21 (listArray -> ID .)
-    MINUS           reduce using rule 21 (listArray -> ID .)
-    BY              reduce using rule 21 (listArray -> ID .)
-    DIVISION        reduce using rule 21 (listArray -> ID .)
-    R_PAR           reduce using rule 21 (listArray -> ID .)
-    COMMA           reduce using rule 21 (listArray -> ID .)
-    SEMICOLON       reduce using rule 21 (listArray -> ID .)
-    R_BRACKET       reduce using rule 21 (listArray -> ID .)
+    SEMICOLON       reduce using rule 25 (expression -> NUMBER .)
+    PLUS            reduce using rule 25 (expression -> NUMBER .)
+    MINUS           reduce using rule 25 (expression -> NUMBER .)
+    BY              reduce using rule 25 (expression -> NUMBER .)
+    DIVISION        reduce using rule 25 (expression -> NUMBER .)
+    R_PAR           reduce using rule 25 (expression -> NUMBER .)
+    R_BRACKET       reduce using rule 25 (expression -> NUMBER .)
+    COMMA           reduce using rule 25 (expression -> NUMBER .)
 
 
 state 23
 
-    (4) instruction -> VAR ID COLON type EQUAL . expression SEMICOLON
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MINUS expression
-    (13) expression -> . expression BY expression
-    (14) expression -> . expression DIVISION expression
-    (15) expression -> . L_PAR expression R_PAR
-    (16) expression -> . NUMBER
-    (17) expression -> . STRING
-    (18) expression -> . listArray
-    (19) listArray -> . listArray DOT ID
-    (20) listArray -> . listArray listAccessArray
-    (21) listArray -> . ID
+    (26) expression -> STRING .
 
-    L_PAR           shift and go to state 16
-    NUMBER          shift and go to state 19
-    STRING          shift and go to state 20
-    ID              shift and go to state 22
+    SEMICOLON       reduce using rule 26 (expression -> STRING .)
+    PLUS            reduce using rule 26 (expression -> STRING .)
+    MINUS           reduce using rule 26 (expression -> STRING .)
+    BY              reduce using rule 26 (expression -> STRING .)
+    DIVISION        reduce using rule 26 (expression -> STRING .)
+    R_PAR           reduce using rule 26 (expression -> STRING .)
+    R_BRACKET       reduce using rule 26 (expression -> STRING .)
+    COMMA           reduce using rule 26 (expression -> STRING .)
 
-    expression                     shift and go to state 34
-    listArray                      shift and go to state 21
 
 state 24
 
-    (15) expression -> L_PAR expression . R_PAR
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MINUS expression
-    (13) expression -> expression . BY expression
-    (14) expression -> expression . DIVISION expression
+    (27) expression -> FLOAT .
 
-    R_PAR           shift and go to state 35
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
-    BY              shift and go to state 29
-    DIVISION        shift and go to state 30
+    SEMICOLON       reduce using rule 27 (expression -> FLOAT .)
+    PLUS            reduce using rule 27 (expression -> FLOAT .)
+    MINUS           reduce using rule 27 (expression -> FLOAT .)
+    BY              reduce using rule 27 (expression -> FLOAT .)
+    DIVISION        reduce using rule 27 (expression -> FLOAT .)
+    R_PAR           reduce using rule 27 (expression -> FLOAT .)
+    R_BRACKET       reduce using rule 27 (expression -> FLOAT .)
+    COMMA           reduce using rule 27 (expression -> FLOAT .)
 
 
 state 25
 
-    (3) instruction -> CONSOLE DOT LOG L_PAR expressionList R_PAR . SEMICOLON
+    (28) expression -> listArray .
+    (30) listArray -> listArray . L_BRACKET expression R_BRACKET
+    (31) listArray -> listArray . DOT ID
 
-    SEMICOLON       shift and go to state 36
+    SEMICOLON       reduce using rule 28 (expression -> listArray .)
+    PLUS            reduce using rule 28 (expression -> listArray .)
+    MINUS           reduce using rule 28 (expression -> listArray .)
+    BY              reduce using rule 28 (expression -> listArray .)
+    DIVISION        reduce using rule 28 (expression -> listArray .)
+    R_PAR           reduce using rule 28 (expression -> listArray .)
+    R_BRACKET       reduce using rule 28 (expression -> listArray .)
+    COMMA           reduce using rule 28 (expression -> listArray .)
+    L_BRACKET       shift and go to state 42
+    DOT             shift and go to state 43
 
 
 state 26
 
-    (9) expressionList -> expressionList COMMA . expression
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MINUS expression
-    (13) expression -> . expression BY expression
-    (14) expression -> . expression DIVISION expression
-    (15) expression -> . L_PAR expression R_PAR
-    (16) expression -> . NUMBER
-    (17) expression -> . STRING
-    (18) expression -> . listArray
-    (19) listArray -> . listArray DOT ID
-    (20) listArray -> . listArray listAccessArray
-    (21) listArray -> . ID
+    (29) expression -> L_BRACKET . expressionList R_BRACKET
+    (18) expressionList -> . expressionList COMMA expression
+    (19) expressionList -> . expression
+    (20) expression -> . expression PLUS expression
+    (21) expression -> . expression MINUS expression
+    (22) expression -> . expression BY expression
+    (23) expression -> . expression DIVISION expression
+    (24) expression -> . L_PAR expression R_PAR
+    (25) expression -> . NUMBER
+    (26) expression -> . STRING
+    (27) expression -> . FLOAT
+    (28) expression -> . listArray
+    (29) expression -> . L_BRACKET expressionList R_BRACKET
+    (30) listArray -> . listArray L_BRACKET expression R_BRACKET
+    (31) listArray -> . listArray DOT ID
+    (32) listArray -> . ID
 
-    L_PAR           shift and go to state 16
-    NUMBER          shift and go to state 19
-    STRING          shift and go to state 20
-    ID              shift and go to state 22
+    L_PAR           shift and go to state 21
+    NUMBER          shift and go to state 22
+    STRING          shift and go to state 23
+    FLOAT           shift and go to state 24
+    L_BRACKET       shift and go to state 26
+    ID              shift and go to state 19
 
-    expression                     shift and go to state 37
-    listArray                      shift and go to state 21
+    expressionList                 shift and go to state 44
+    expression                     shift and go to state 45
+    listArray                      shift and go to state 25
 
 state 27
 
-    (11) expression -> expression PLUS . expression
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MINUS expression
-    (13) expression -> . expression BY expression
-    (14) expression -> . expression DIVISION expression
-    (15) expression -> . L_PAR expression R_PAR
-    (16) expression -> . NUMBER
-    (17) expression -> . STRING
-    (18) expression -> . listArray
-    (19) listArray -> . listArray DOT ID
-    (20) listArray -> . listArray listAccessArray
-    (21) listArray -> . ID
+    (11) declaration -> CONST ID COLON . type EQUAL expression SEMICOLON
+    (14) type -> . NUMBER
+    (15) type -> . FLOAT
+    (16) type -> . STRING
+    (17) type -> . BOOL
 
-    L_PAR           shift and go to state 16
-    NUMBER          shift and go to state 19
-    STRING          shift and go to state 20
-    ID              shift and go to state 22
+    NUMBER          shift and go to state 31
+    FLOAT           shift and go to state 32
+    STRING          shift and go to state 33
+    BOOL            shift and go to state 34
 
-    expression                     shift and go to state 38
-    listArray                      shift and go to state 21
+    type                           shift and go to state 46
 
 state 28
 
-    (12) expression -> expression MINUS . expression
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MINUS expression
-    (13) expression -> . expression BY expression
-    (14) expression -> . expression DIVISION expression
-    (15) expression -> . L_PAR expression R_PAR
-    (16) expression -> . NUMBER
-    (17) expression -> . STRING
-    (18) expression -> . listArray
-    (19) listArray -> . listArray DOT ID
-    (20) listArray -> . listArray listAccessArray
-    (21) listArray -> . ID
+    (12) declaration -> CONST ID EQUAL . expression SEMICOLON
+    (20) expression -> . expression PLUS expression
+    (21) expression -> . expression MINUS expression
+    (22) expression -> . expression BY expression
+    (23) expression -> . expression DIVISION expression
+    (24) expression -> . L_PAR expression R_PAR
+    (25) expression -> . NUMBER
+    (26) expression -> . STRING
+    (27) expression -> . FLOAT
+    (28) expression -> . listArray
+    (29) expression -> . L_BRACKET expressionList R_BRACKET
+    (30) listArray -> . listArray L_BRACKET expression R_BRACKET
+    (31) listArray -> . listArray DOT ID
+    (32) listArray -> . ID
 
-    L_PAR           shift and go to state 16
-    NUMBER          shift and go to state 19
-    STRING          shift and go to state 20
-    ID              shift and go to state 22
+    L_PAR           shift and go to state 21
+    NUMBER          shift and go to state 22
+    STRING          shift and go to state 23
+    FLOAT           shift and go to state 24
+    L_BRACKET       shift and go to state 26
+    ID              shift and go to state 19
 
-    expression                     shift and go to state 39
-    listArray                      shift and go to state 21
+    expression                     shift and go to state 47
+    listArray                      shift and go to state 25
 
 state 29
 
-    (13) expression -> expression BY . expression
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MINUS expression
-    (13) expression -> . expression BY expression
-    (14) expression -> . expression DIVISION expression
-    (15) expression -> . L_PAR expression R_PAR
-    (16) expression -> . NUMBER
-    (17) expression -> . STRING
-    (18) expression -> . listArray
-    (19) listArray -> . listArray DOT ID
-    (20) listArray -> . listArray listAccessArray
-    (21) listArray -> . ID
+    (7) print -> CONSOLE DOT LOG L_PAR . expressionList R_PAR SEMICOLON
+    (18) expressionList -> . expressionList COMMA expression
+    (19) expressionList -> . expression
+    (20) expression -> . expression PLUS expression
+    (21) expression -> . expression MINUS expression
+    (22) expression -> . expression BY expression
+    (23) expression -> . expression DIVISION expression
+    (24) expression -> . L_PAR expression R_PAR
+    (25) expression -> . NUMBER
+    (26) expression -> . STRING
+    (27) expression -> . FLOAT
+    (28) expression -> . listArray
+    (29) expression -> . L_BRACKET expressionList R_BRACKET
+    (30) listArray -> . listArray L_BRACKET expression R_BRACKET
+    (31) listArray -> . listArray DOT ID
+    (32) listArray -> . ID
 
-    L_PAR           shift and go to state 16
-    NUMBER          shift and go to state 19
-    STRING          shift and go to state 20
-    ID              shift and go to state 22
+    L_PAR           shift and go to state 21
+    NUMBER          shift and go to state 22
+    STRING          shift and go to state 23
+    FLOAT           shift and go to state 24
+    L_BRACKET       shift and go to state 26
+    ID              shift and go to state 19
 
-    expression                     shift and go to state 40
-    listArray                      shift and go to state 21
+    expressionList                 shift and go to state 48
+    expression                     shift and go to state 45
+    listArray                      shift and go to state 25
 
 state 30
 
-    (14) expression -> expression DIVISION . expression
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MINUS expression
-    (13) expression -> . expression BY expression
-    (14) expression -> . expression DIVISION expression
-    (15) expression -> . L_PAR expression R_PAR
-    (16) expression -> . NUMBER
-    (17) expression -> . STRING
-    (18) expression -> . listArray
-    (19) listArray -> . listArray DOT ID
-    (20) listArray -> . listArray listAccessArray
-    (21) listArray -> . ID
+    (8) declaration -> VAR ID COLON type . EQUAL expression SEMICOLON
+    (10) declaration -> VAR ID COLON type . SEMICOLON
 
-    L_PAR           shift and go to state 16
-    NUMBER          shift and go to state 19
-    STRING          shift and go to state 20
-    ID              shift and go to state 22
+    EQUAL           shift and go to state 49
+    SEMICOLON       shift and go to state 50
 
-    expression                     shift and go to state 41
-    listArray                      shift and go to state 21
 
 state 31
 
-    (19) listArray -> listArray DOT . ID
+    (14) type -> NUMBER .
 
-    ID              shift and go to state 42
+    EQUAL           reduce using rule 14 (type -> NUMBER .)
+    SEMICOLON       reduce using rule 14 (type -> NUMBER .)
 
 
 state 32
 
-    (20) listArray -> listArray listAccessArray .
-    (22) listAccessArray -> listAccessArray . L_BRACKET expression R_BRACKET
+    (15) type -> FLOAT .
 
-  ! shift/reduce conflict for L_BRACKET resolved as shift
-    DOT             reduce using rule 20 (listArray -> listArray listAccessArray .)
-    PLUS            reduce using rule 20 (listArray -> listArray listAccessArray .)
-    MINUS           reduce using rule 20 (listArray -> listArray listAccessArray .)
-    BY              reduce using rule 20 (listArray -> listArray listAccessArray .)
-    DIVISION        reduce using rule 20 (listArray -> listArray listAccessArray .)
-    R_PAR           reduce using rule 20 (listArray -> listArray listAccessArray .)
-    COMMA           reduce using rule 20 (listArray -> listArray listAccessArray .)
-    SEMICOLON       reduce using rule 20 (listArray -> listArray listAccessArray .)
-    R_BRACKET       reduce using rule 20 (listArray -> listArray listAccessArray .)
-    L_BRACKET       shift and go to state 43
-
-  ! L_BRACKET       [ reduce using rule 20 (listArray -> listArray listAccessArray .) ]
+    EQUAL           reduce using rule 15 (type -> FLOAT .)
+    SEMICOLON       reduce using rule 15 (type -> FLOAT .)
 
 
 state 33
 
-    (23) listAccessArray -> L_BRACKET . expression R_BRACKET
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MINUS expression
-    (13) expression -> . expression BY expression
-    (14) expression -> . expression DIVISION expression
-    (15) expression -> . L_PAR expression R_PAR
-    (16) expression -> . NUMBER
-    (17) expression -> . STRING
-    (18) expression -> . listArray
-    (19) listArray -> . listArray DOT ID
-    (20) listArray -> . listArray listAccessArray
-    (21) listArray -> . ID
+    (16) type -> STRING .
 
-    L_PAR           shift and go to state 16
-    NUMBER          shift and go to state 19
-    STRING          shift and go to state 20
-    ID              shift and go to state 22
+    EQUAL           reduce using rule 16 (type -> STRING .)
+    SEMICOLON       reduce using rule 16 (type -> STRING .)
 
-    expression                     shift and go to state 44
-    listArray                      shift and go to state 21
 
 state 34
 
-    (4) instruction -> VAR ID COLON type EQUAL expression . SEMICOLON
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MINUS expression
-    (13) expression -> expression . BY expression
-    (14) expression -> expression . DIVISION expression
+    (17) type -> BOOL .
 
-    SEMICOLON       shift and go to state 45
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
-    BY              shift and go to state 29
-    DIVISION        shift and go to state 30
+    EQUAL           reduce using rule 17 (type -> BOOL .)
+    SEMICOLON       reduce using rule 17 (type -> BOOL .)
 
 
 state 35
 
-    (15) expression -> L_PAR expression R_PAR .
+    (9) declaration -> VAR ID EQUAL expression . SEMICOLON
+    (20) expression -> expression . PLUS expression
+    (21) expression -> expression . MINUS expression
+    (22) expression -> expression . BY expression
+    (23) expression -> expression . DIVISION expression
 
-    PLUS            reduce using rule 15 (expression -> L_PAR expression R_PAR .)
-    MINUS           reduce using rule 15 (expression -> L_PAR expression R_PAR .)
-    BY              reduce using rule 15 (expression -> L_PAR expression R_PAR .)
-    DIVISION        reduce using rule 15 (expression -> L_PAR expression R_PAR .)
-    R_PAR           reduce using rule 15 (expression -> L_PAR expression R_PAR .)
-    COMMA           reduce using rule 15 (expression -> L_PAR expression R_PAR .)
-    SEMICOLON       reduce using rule 15 (expression -> L_PAR expression R_PAR .)
-    R_BRACKET       reduce using rule 15 (expression -> L_PAR expression R_PAR .)
+    SEMICOLON       shift and go to state 51
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    BY              shift and go to state 39
+    DIVISION        shift and go to state 40
 
 
 state 36
 
-    (3) instruction -> CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON .
+    (13) assignment -> ID EQUAL expression SEMICOLON .
 
-    CONSOLE         reduce using rule 3 (instruction -> CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON .)
-    VAR             reduce using rule 3 (instruction -> CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON .)
-    $end            reduce using rule 3 (instruction -> CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON .)
+    CONSOLE         reduce using rule 13 (assignment -> ID EQUAL expression SEMICOLON .)
+    VAR             reduce using rule 13 (assignment -> ID EQUAL expression SEMICOLON .)
+    CONST           reduce using rule 13 (assignment -> ID EQUAL expression SEMICOLON .)
+    ID              reduce using rule 13 (assignment -> ID EQUAL expression SEMICOLON .)
+    $end            reduce using rule 13 (assignment -> ID EQUAL expression SEMICOLON .)
 
 
 state 37
 
-    (9) expressionList -> expressionList COMMA expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MINUS expression
-    (13) expression -> expression . BY expression
-    (14) expression -> expression . DIVISION expression
+    (20) expression -> expression PLUS . expression
+    (20) expression -> . expression PLUS expression
+    (21) expression -> . expression MINUS expression
+    (22) expression -> . expression BY expression
+    (23) expression -> . expression DIVISION expression
+    (24) expression -> . L_PAR expression R_PAR
+    (25) expression -> . NUMBER
+    (26) expression -> . STRING
+    (27) expression -> . FLOAT
+    (28) expression -> . listArray
+    (29) expression -> . L_BRACKET expressionList R_BRACKET
+    (30) listArray -> . listArray L_BRACKET expression R_BRACKET
+    (31) listArray -> . listArray DOT ID
+    (32) listArray -> . ID
 
-    R_PAR           reduce using rule 9 (expressionList -> expressionList COMMA expression .)
-    COMMA           reduce using rule 9 (expressionList -> expressionList COMMA expression .)
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
-    BY              shift and go to state 29
-    DIVISION        shift and go to state 30
+    L_PAR           shift and go to state 21
+    NUMBER          shift and go to state 22
+    STRING          shift and go to state 23
+    FLOAT           shift and go to state 24
+    L_BRACKET       shift and go to state 26
+    ID              shift and go to state 19
 
+    expression                     shift and go to state 52
+    listArray                      shift and go to state 25
 
 state 38
 
-    (11) expression -> expression PLUS expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MINUS expression
-    (13) expression -> expression . BY expression
-    (14) expression -> expression . DIVISION expression
+    (21) expression -> expression MINUS . expression
+    (20) expression -> . expression PLUS expression
+    (21) expression -> . expression MINUS expression
+    (22) expression -> . expression BY expression
+    (23) expression -> . expression DIVISION expression
+    (24) expression -> . L_PAR expression R_PAR
+    (25) expression -> . NUMBER
+    (26) expression -> . STRING
+    (27) expression -> . FLOAT
+    (28) expression -> . listArray
+    (29) expression -> . L_BRACKET expressionList R_BRACKET
+    (30) listArray -> . listArray L_BRACKET expression R_BRACKET
+    (31) listArray -> . listArray DOT ID
+    (32) listArray -> . ID
 
-    PLUS            reduce using rule 11 (expression -> expression PLUS expression .)
-    MINUS           reduce using rule 11 (expression -> expression PLUS expression .)
-    R_PAR           reduce using rule 11 (expression -> expression PLUS expression .)
-    COMMA           reduce using rule 11 (expression -> expression PLUS expression .)
-    SEMICOLON       reduce using rule 11 (expression -> expression PLUS expression .)
-    R_BRACKET       reduce using rule 11 (expression -> expression PLUS expression .)
-    BY              shift and go to state 29
-    DIVISION        shift and go to state 30
+    L_PAR           shift and go to state 21
+    NUMBER          shift and go to state 22
+    STRING          shift and go to state 23
+    FLOAT           shift and go to state 24
+    L_BRACKET       shift and go to state 26
+    ID              shift and go to state 19
 
-  ! BY              [ reduce using rule 11 (expression -> expression PLUS expression .) ]
-  ! DIVISION        [ reduce using rule 11 (expression -> expression PLUS expression .) ]
-  ! PLUS            [ shift and go to state 27 ]
-  ! MINUS           [ shift and go to state 28 ]
-
+    expression                     shift and go to state 53
+    listArray                      shift and go to state 25
 
 state 39
 
-    (12) expression -> expression MINUS expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MINUS expression
-    (13) expression -> expression . BY expression
-    (14) expression -> expression . DIVISION expression
+    (22) expression -> expression BY . expression
+    (20) expression -> . expression PLUS expression
+    (21) expression -> . expression MINUS expression
+    (22) expression -> . expression BY expression
+    (23) expression -> . expression DIVISION expression
+    (24) expression -> . L_PAR expression R_PAR
+    (25) expression -> . NUMBER
+    (26) expression -> . STRING
+    (27) expression -> . FLOAT
+    (28) expression -> . listArray
+    (29) expression -> . L_BRACKET expressionList R_BRACKET
+    (30) listArray -> . listArray L_BRACKET expression R_BRACKET
+    (31) listArray -> . listArray DOT ID
+    (32) listArray -> . ID
 
-    PLUS            reduce using rule 12 (expression -> expression MINUS expression .)
-    MINUS           reduce using rule 12 (expression -> expression MINUS expression .)
-    R_PAR           reduce using rule 12 (expression -> expression MINUS expression .)
-    COMMA           reduce using rule 12 (expression -> expression MINUS expression .)
-    SEMICOLON       reduce using rule 12 (expression -> expression MINUS expression .)
-    R_BRACKET       reduce using rule 12 (expression -> expression MINUS expression .)
-    BY              shift and go to state 29
-    DIVISION        shift and go to state 30
+    L_PAR           shift and go to state 21
+    NUMBER          shift and go to state 22
+    STRING          shift and go to state 23
+    FLOAT           shift and go to state 24
+    L_BRACKET       shift and go to state 26
+    ID              shift and go to state 19
 
-  ! BY              [ reduce using rule 12 (expression -> expression MINUS expression .) ]
-  ! DIVISION        [ reduce using rule 12 (expression -> expression MINUS expression .) ]
-  ! PLUS            [ shift and go to state 27 ]
-  ! MINUS           [ shift and go to state 28 ]
-
+    expression                     shift and go to state 54
+    listArray                      shift and go to state 25
 
 state 40
 
-    (13) expression -> expression BY expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MINUS expression
-    (13) expression -> expression . BY expression
-    (14) expression -> expression . DIVISION expression
+    (23) expression -> expression DIVISION . expression
+    (20) expression -> . expression PLUS expression
+    (21) expression -> . expression MINUS expression
+    (22) expression -> . expression BY expression
+    (23) expression -> . expression DIVISION expression
+    (24) expression -> . L_PAR expression R_PAR
+    (25) expression -> . NUMBER
+    (26) expression -> . STRING
+    (27) expression -> . FLOAT
+    (28) expression -> . listArray
+    (29) expression -> . L_BRACKET expressionList R_BRACKET
+    (30) listArray -> . listArray L_BRACKET expression R_BRACKET
+    (31) listArray -> . listArray DOT ID
+    (32) listArray -> . ID
 
-    PLUS            reduce using rule 13 (expression -> expression BY expression .)
-    MINUS           reduce using rule 13 (expression -> expression BY expression .)
-    BY              reduce using rule 13 (expression -> expression BY expression .)
-    DIVISION        reduce using rule 13 (expression -> expression BY expression .)
-    R_PAR           reduce using rule 13 (expression -> expression BY expression .)
-    COMMA           reduce using rule 13 (expression -> expression BY expression .)
-    SEMICOLON       reduce using rule 13 (expression -> expression BY expression .)
-    R_BRACKET       reduce using rule 13 (expression -> expression BY expression .)
+    L_PAR           shift and go to state 21
+    NUMBER          shift and go to state 22
+    STRING          shift and go to state 23
+    FLOAT           shift and go to state 24
+    L_BRACKET       shift and go to state 26
+    ID              shift and go to state 19
 
-  ! PLUS            [ shift and go to state 27 ]
-  ! MINUS           [ shift and go to state 28 ]
-  ! BY              [ shift and go to state 29 ]
-  ! DIVISION        [ shift and go to state 30 ]
-
+    expression                     shift and go to state 55
+    listArray                      shift and go to state 25
 
 state 41
 
-    (14) expression -> expression DIVISION expression .
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MINUS expression
-    (13) expression -> expression . BY expression
-    (14) expression -> expression . DIVISION expression
+    (24) expression -> L_PAR expression . R_PAR
+    (20) expression -> expression . PLUS expression
+    (21) expression -> expression . MINUS expression
+    (22) expression -> expression . BY expression
+    (23) expression -> expression . DIVISION expression
 
-    PLUS            reduce using rule 14 (expression -> expression DIVISION expression .)
-    MINUS           reduce using rule 14 (expression -> expression DIVISION expression .)
-    BY              reduce using rule 14 (expression -> expression DIVISION expression .)
-    DIVISION        reduce using rule 14 (expression -> expression DIVISION expression .)
-    R_PAR           reduce using rule 14 (expression -> expression DIVISION expression .)
-    COMMA           reduce using rule 14 (expression -> expression DIVISION expression .)
-    SEMICOLON       reduce using rule 14 (expression -> expression DIVISION expression .)
-    R_BRACKET       reduce using rule 14 (expression -> expression DIVISION expression .)
-
-  ! PLUS            [ shift and go to state 27 ]
-  ! MINUS           [ shift and go to state 28 ]
-  ! BY              [ shift and go to state 29 ]
-  ! DIVISION        [ shift and go to state 30 ]
+    R_PAR           shift and go to state 56
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    BY              shift and go to state 39
+    DIVISION        shift and go to state 40
 
 
 state 42
 
-    (19) listArray -> listArray DOT ID .
+    (30) listArray -> listArray L_BRACKET . expression R_BRACKET
+    (20) expression -> . expression PLUS expression
+    (21) expression -> . expression MINUS expression
+    (22) expression -> . expression BY expression
+    (23) expression -> . expression DIVISION expression
+    (24) expression -> . L_PAR expression R_PAR
+    (25) expression -> . NUMBER
+    (26) expression -> . STRING
+    (27) expression -> . FLOAT
+    (28) expression -> . listArray
+    (29) expression -> . L_BRACKET expressionList R_BRACKET
+    (30) listArray -> . listArray L_BRACKET expression R_BRACKET
+    (31) listArray -> . listArray DOT ID
+    (32) listArray -> . ID
 
-    DOT             reduce using rule 19 (listArray -> listArray DOT ID .)
-    L_BRACKET       reduce using rule 19 (listArray -> listArray DOT ID .)
-    PLUS            reduce using rule 19 (listArray -> listArray DOT ID .)
-    MINUS           reduce using rule 19 (listArray -> listArray DOT ID .)
-    BY              reduce using rule 19 (listArray -> listArray DOT ID .)
-    DIVISION        reduce using rule 19 (listArray -> listArray DOT ID .)
-    R_PAR           reduce using rule 19 (listArray -> listArray DOT ID .)
-    COMMA           reduce using rule 19 (listArray -> listArray DOT ID .)
-    SEMICOLON       reduce using rule 19 (listArray -> listArray DOT ID .)
-    R_BRACKET       reduce using rule 19 (listArray -> listArray DOT ID .)
+    L_PAR           shift and go to state 21
+    NUMBER          shift and go to state 22
+    STRING          shift and go to state 23
+    FLOAT           shift and go to state 24
+    L_BRACKET       shift and go to state 26
+    ID              shift and go to state 19
 
+    listArray                      shift and go to state 25
+    expression                     shift and go to state 57
 
 state 43
 
-    (22) listAccessArray -> listAccessArray L_BRACKET . expression R_BRACKET
-    (11) expression -> . expression PLUS expression
-    (12) expression -> . expression MINUS expression
-    (13) expression -> . expression BY expression
-    (14) expression -> . expression DIVISION expression
-    (15) expression -> . L_PAR expression R_PAR
-    (16) expression -> . NUMBER
-    (17) expression -> . STRING
-    (18) expression -> . listArray
-    (19) listArray -> . listArray DOT ID
-    (20) listArray -> . listArray listAccessArray
-    (21) listArray -> . ID
+    (31) listArray -> listArray DOT . ID
 
-    L_PAR           shift and go to state 16
-    NUMBER          shift and go to state 19
-    STRING          shift and go to state 20
-    ID              shift and go to state 22
+    ID              shift and go to state 58
 
-    expression                     shift and go to state 46
-    listArray                      shift and go to state 21
 
 state 44
 
-    (23) listAccessArray -> L_BRACKET expression . R_BRACKET
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MINUS expression
-    (13) expression -> expression . BY expression
-    (14) expression -> expression . DIVISION expression
+    (29) expression -> L_BRACKET expressionList . R_BRACKET
+    (18) expressionList -> expressionList . COMMA expression
 
-    R_BRACKET       shift and go to state 47
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
-    BY              shift and go to state 29
-    DIVISION        shift and go to state 30
+    R_BRACKET       shift and go to state 59
+    COMMA           shift and go to state 60
 
 
 state 45
 
-    (4) instruction -> VAR ID COLON type EQUAL expression SEMICOLON .
+    (19) expressionList -> expression .
+    (20) expression -> expression . PLUS expression
+    (21) expression -> expression . MINUS expression
+    (22) expression -> expression . BY expression
+    (23) expression -> expression . DIVISION expression
 
-    CONSOLE         reduce using rule 4 (instruction -> VAR ID COLON type EQUAL expression SEMICOLON .)
-    VAR             reduce using rule 4 (instruction -> VAR ID COLON type EQUAL expression SEMICOLON .)
-    $end            reduce using rule 4 (instruction -> VAR ID COLON type EQUAL expression SEMICOLON .)
+    R_BRACKET       reduce using rule 19 (expressionList -> expression .)
+    COMMA           reduce using rule 19 (expressionList -> expression .)
+    R_PAR           reduce using rule 19 (expressionList -> expression .)
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    BY              shift and go to state 39
+    DIVISION        shift and go to state 40
 
 
 state 46
 
-    (22) listAccessArray -> listAccessArray L_BRACKET expression . R_BRACKET
-    (11) expression -> expression . PLUS expression
-    (12) expression -> expression . MINUS expression
-    (13) expression -> expression . BY expression
-    (14) expression -> expression . DIVISION expression
+    (11) declaration -> CONST ID COLON type . EQUAL expression SEMICOLON
 
-    R_BRACKET       shift and go to state 48
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
-    BY              shift and go to state 29
-    DIVISION        shift and go to state 30
+    EQUAL           shift and go to state 61
 
 
 state 47
 
-    (23) listAccessArray -> L_BRACKET expression R_BRACKET .
+    (12) declaration -> CONST ID EQUAL expression . SEMICOLON
+    (20) expression -> expression . PLUS expression
+    (21) expression -> expression . MINUS expression
+    (22) expression -> expression . BY expression
+    (23) expression -> expression . DIVISION expression
 
-    L_BRACKET       reduce using rule 23 (listAccessArray -> L_BRACKET expression R_BRACKET .)
-    DOT             reduce using rule 23 (listAccessArray -> L_BRACKET expression R_BRACKET .)
-    PLUS            reduce using rule 23 (listAccessArray -> L_BRACKET expression R_BRACKET .)
-    MINUS           reduce using rule 23 (listAccessArray -> L_BRACKET expression R_BRACKET .)
-    BY              reduce using rule 23 (listAccessArray -> L_BRACKET expression R_BRACKET .)
-    DIVISION        reduce using rule 23 (listAccessArray -> L_BRACKET expression R_BRACKET .)
-    R_PAR           reduce using rule 23 (listAccessArray -> L_BRACKET expression R_BRACKET .)
-    COMMA           reduce using rule 23 (listAccessArray -> L_BRACKET expression R_BRACKET .)
-    SEMICOLON       reduce using rule 23 (listAccessArray -> L_BRACKET expression R_BRACKET .)
-    R_BRACKET       reduce using rule 23 (listAccessArray -> L_BRACKET expression R_BRACKET .)
+    SEMICOLON       shift and go to state 62
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    BY              shift and go to state 39
+    DIVISION        shift and go to state 40
 
 
 state 48
 
-    (22) listAccessArray -> listAccessArray L_BRACKET expression R_BRACKET .
+    (7) print -> CONSOLE DOT LOG L_PAR expressionList . R_PAR SEMICOLON
+    (18) expressionList -> expressionList . COMMA expression
 
-    L_BRACKET       reduce using rule 22 (listAccessArray -> listAccessArray L_BRACKET expression R_BRACKET .)
-    DOT             reduce using rule 22 (listAccessArray -> listAccessArray L_BRACKET expression R_BRACKET .)
-    PLUS            reduce using rule 22 (listAccessArray -> listAccessArray L_BRACKET expression R_BRACKET .)
-    MINUS           reduce using rule 22 (listAccessArray -> listAccessArray L_BRACKET expression R_BRACKET .)
-    BY              reduce using rule 22 (listAccessArray -> listAccessArray L_BRACKET expression R_BRACKET .)
-    DIVISION        reduce using rule 22 (listAccessArray -> listAccessArray L_BRACKET expression R_BRACKET .)
-    R_PAR           reduce using rule 22 (listAccessArray -> listAccessArray L_BRACKET expression R_BRACKET .)
-    COMMA           reduce using rule 22 (listAccessArray -> listAccessArray L_BRACKET expression R_BRACKET .)
-    SEMICOLON       reduce using rule 22 (listAccessArray -> listAccessArray L_BRACKET expression R_BRACKET .)
-    R_BRACKET       reduce using rule 22 (listAccessArray -> listAccessArray L_BRACKET expression R_BRACKET .)
+    R_PAR           shift and go to state 63
+    COMMA           shift and go to state 60
 
-WARNING: 
-WARNING: Conflicts:
-WARNING: 
-WARNING: shift/reduce conflict for L_BRACKET in state 32 resolved as shift
+
+state 49
+
+    (8) declaration -> VAR ID COLON type EQUAL . expression SEMICOLON
+    (20) expression -> . expression PLUS expression
+    (21) expression -> . expression MINUS expression
+    (22) expression -> . expression BY expression
+    (23) expression -> . expression DIVISION expression
+    (24) expression -> . L_PAR expression R_PAR
+    (25) expression -> . NUMBER
+    (26) expression -> . STRING
+    (27) expression -> . FLOAT
+    (28) expression -> . listArray
+    (29) expression -> . L_BRACKET expressionList R_BRACKET
+    (30) listArray -> . listArray L_BRACKET expression R_BRACKET
+    (31) listArray -> . listArray DOT ID
+    (32) listArray -> . ID
+
+    L_PAR           shift and go to state 21
+    NUMBER          shift and go to state 22
+    STRING          shift and go to state 23
+    FLOAT           shift and go to state 24
+    L_BRACKET       shift and go to state 26
+    ID              shift and go to state 19
+
+    expression                     shift and go to state 64
+    listArray                      shift and go to state 25
+
+state 50
+
+    (10) declaration -> VAR ID COLON type SEMICOLON .
+
+    CONSOLE         reduce using rule 10 (declaration -> VAR ID COLON type SEMICOLON .)
+    VAR             reduce using rule 10 (declaration -> VAR ID COLON type SEMICOLON .)
+    CONST           reduce using rule 10 (declaration -> VAR ID COLON type SEMICOLON .)
+    ID              reduce using rule 10 (declaration -> VAR ID COLON type SEMICOLON .)
+    $end            reduce using rule 10 (declaration -> VAR ID COLON type SEMICOLON .)
+
+
+state 51
+
+    (9) declaration -> VAR ID EQUAL expression SEMICOLON .
+
+    CONSOLE         reduce using rule 9 (declaration -> VAR ID EQUAL expression SEMICOLON .)
+    VAR             reduce using rule 9 (declaration -> VAR ID EQUAL expression SEMICOLON .)
+    CONST           reduce using rule 9 (declaration -> VAR ID EQUAL expression SEMICOLON .)
+    ID              reduce using rule 9 (declaration -> VAR ID EQUAL expression SEMICOLON .)
+    $end            reduce using rule 9 (declaration -> VAR ID EQUAL expression SEMICOLON .)
+
+
+state 52
+
+    (20) expression -> expression PLUS expression .
+    (20) expression -> expression . PLUS expression
+    (21) expression -> expression . MINUS expression
+    (22) expression -> expression . BY expression
+    (23) expression -> expression . DIVISION expression
+
+    SEMICOLON       reduce using rule 20 (expression -> expression PLUS expression .)
+    PLUS            reduce using rule 20 (expression -> expression PLUS expression .)
+    MINUS           reduce using rule 20 (expression -> expression PLUS expression .)
+    R_PAR           reduce using rule 20 (expression -> expression PLUS expression .)
+    R_BRACKET       reduce using rule 20 (expression -> expression PLUS expression .)
+    COMMA           reduce using rule 20 (expression -> expression PLUS expression .)
+    BY              shift and go to state 39
+    DIVISION        shift and go to state 40
+
+  ! BY              [ reduce using rule 20 (expression -> expression PLUS expression .) ]
+  ! DIVISION        [ reduce using rule 20 (expression -> expression PLUS expression .) ]
+  ! PLUS            [ shift and go to state 37 ]
+  ! MINUS           [ shift and go to state 38 ]
+
+
+state 53
+
+    (21) expression -> expression MINUS expression .
+    (20) expression -> expression . PLUS expression
+    (21) expression -> expression . MINUS expression
+    (22) expression -> expression . BY expression
+    (23) expression -> expression . DIVISION expression
+
+    SEMICOLON       reduce using rule 21 (expression -> expression MINUS expression .)
+    PLUS            reduce using rule 21 (expression -> expression MINUS expression .)
+    MINUS           reduce using rule 21 (expression -> expression MINUS expression .)
+    R_PAR           reduce using rule 21 (expression -> expression MINUS expression .)
+    R_BRACKET       reduce using rule 21 (expression -> expression MINUS expression .)
+    COMMA           reduce using rule 21 (expression -> expression MINUS expression .)
+    BY              shift and go to state 39
+    DIVISION        shift and go to state 40
+
+  ! BY              [ reduce using rule 21 (expression -> expression MINUS expression .) ]
+  ! DIVISION        [ reduce using rule 21 (expression -> expression MINUS expression .) ]
+  ! PLUS            [ shift and go to state 37 ]
+  ! MINUS           [ shift and go to state 38 ]
+
+
+state 54
+
+    (22) expression -> expression BY expression .
+    (20) expression -> expression . PLUS expression
+    (21) expression -> expression . MINUS expression
+    (22) expression -> expression . BY expression
+    (23) expression -> expression . DIVISION expression
+
+    SEMICOLON       reduce using rule 22 (expression -> expression BY expression .)
+    PLUS            reduce using rule 22 (expression -> expression BY expression .)
+    MINUS           reduce using rule 22 (expression -> expression BY expression .)
+    BY              reduce using rule 22 (expression -> expression BY expression .)
+    DIVISION        reduce using rule 22 (expression -> expression BY expression .)
+    R_PAR           reduce using rule 22 (expression -> expression BY expression .)
+    R_BRACKET       reduce using rule 22 (expression -> expression BY expression .)
+    COMMA           reduce using rule 22 (expression -> expression BY expression .)
+
+  ! PLUS            [ shift and go to state 37 ]
+  ! MINUS           [ shift and go to state 38 ]
+  ! BY              [ shift and go to state 39 ]
+  ! DIVISION        [ shift and go to state 40 ]
+
+
+state 55
+
+    (23) expression -> expression DIVISION expression .
+    (20) expression -> expression . PLUS expression
+    (21) expression -> expression . MINUS expression
+    (22) expression -> expression . BY expression
+    (23) expression -> expression . DIVISION expression
+
+    SEMICOLON       reduce using rule 23 (expression -> expression DIVISION expression .)
+    PLUS            reduce using rule 23 (expression -> expression DIVISION expression .)
+    MINUS           reduce using rule 23 (expression -> expression DIVISION expression .)
+    BY              reduce using rule 23 (expression -> expression DIVISION expression .)
+    DIVISION        reduce using rule 23 (expression -> expression DIVISION expression .)
+    R_PAR           reduce using rule 23 (expression -> expression DIVISION expression .)
+    R_BRACKET       reduce using rule 23 (expression -> expression DIVISION expression .)
+    COMMA           reduce using rule 23 (expression -> expression DIVISION expression .)
+
+  ! PLUS            [ shift and go to state 37 ]
+  ! MINUS           [ shift and go to state 38 ]
+  ! BY              [ shift and go to state 39 ]
+  ! DIVISION        [ shift and go to state 40 ]
+
+
+state 56
+
+    (24) expression -> L_PAR expression R_PAR .
+
+    SEMICOLON       reduce using rule 24 (expression -> L_PAR expression R_PAR .)
+    PLUS            reduce using rule 24 (expression -> L_PAR expression R_PAR .)
+    MINUS           reduce using rule 24 (expression -> L_PAR expression R_PAR .)
+    BY              reduce using rule 24 (expression -> L_PAR expression R_PAR .)
+    DIVISION        reduce using rule 24 (expression -> L_PAR expression R_PAR .)
+    R_PAR           reduce using rule 24 (expression -> L_PAR expression R_PAR .)
+    R_BRACKET       reduce using rule 24 (expression -> L_PAR expression R_PAR .)
+    COMMA           reduce using rule 24 (expression -> L_PAR expression R_PAR .)
+
+
+state 57
+
+    (30) listArray -> listArray L_BRACKET expression . R_BRACKET
+    (20) expression -> expression . PLUS expression
+    (21) expression -> expression . MINUS expression
+    (22) expression -> expression . BY expression
+    (23) expression -> expression . DIVISION expression
+
+    R_BRACKET       shift and go to state 65
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    BY              shift and go to state 39
+    DIVISION        shift and go to state 40
+
+
+state 58
+
+    (31) listArray -> listArray DOT ID .
+
+    L_BRACKET       reduce using rule 31 (listArray -> listArray DOT ID .)
+    DOT             reduce using rule 31 (listArray -> listArray DOT ID .)
+    SEMICOLON       reduce using rule 31 (listArray -> listArray DOT ID .)
+    PLUS            reduce using rule 31 (listArray -> listArray DOT ID .)
+    MINUS           reduce using rule 31 (listArray -> listArray DOT ID .)
+    BY              reduce using rule 31 (listArray -> listArray DOT ID .)
+    DIVISION        reduce using rule 31 (listArray -> listArray DOT ID .)
+    R_PAR           reduce using rule 31 (listArray -> listArray DOT ID .)
+    R_BRACKET       reduce using rule 31 (listArray -> listArray DOT ID .)
+    COMMA           reduce using rule 31 (listArray -> listArray DOT ID .)
+
+
+state 59
+
+    (29) expression -> L_BRACKET expressionList R_BRACKET .
+
+    SEMICOLON       reduce using rule 29 (expression -> L_BRACKET expressionList R_BRACKET .)
+    PLUS            reduce using rule 29 (expression -> L_BRACKET expressionList R_BRACKET .)
+    MINUS           reduce using rule 29 (expression -> L_BRACKET expressionList R_BRACKET .)
+    BY              reduce using rule 29 (expression -> L_BRACKET expressionList R_BRACKET .)
+    DIVISION        reduce using rule 29 (expression -> L_BRACKET expressionList R_BRACKET .)
+    R_PAR           reduce using rule 29 (expression -> L_BRACKET expressionList R_BRACKET .)
+    R_BRACKET       reduce using rule 29 (expression -> L_BRACKET expressionList R_BRACKET .)
+    COMMA           reduce using rule 29 (expression -> L_BRACKET expressionList R_BRACKET .)
+
+
+state 60
+
+    (18) expressionList -> expressionList COMMA . expression
+    (20) expression -> . expression PLUS expression
+    (21) expression -> . expression MINUS expression
+    (22) expression -> . expression BY expression
+    (23) expression -> . expression DIVISION expression
+    (24) expression -> . L_PAR expression R_PAR
+    (25) expression -> . NUMBER
+    (26) expression -> . STRING
+    (27) expression -> . FLOAT
+    (28) expression -> . listArray
+    (29) expression -> . L_BRACKET expressionList R_BRACKET
+    (30) listArray -> . listArray L_BRACKET expression R_BRACKET
+    (31) listArray -> . listArray DOT ID
+    (32) listArray -> . ID
+
+    L_PAR           shift and go to state 21
+    NUMBER          shift and go to state 22
+    STRING          shift and go to state 23
+    FLOAT           shift and go to state 24
+    L_BRACKET       shift and go to state 26
+    ID              shift and go to state 19
+
+    expression                     shift and go to state 66
+    listArray                      shift and go to state 25
+
+state 61
+
+    (11) declaration -> CONST ID COLON type EQUAL . expression SEMICOLON
+    (20) expression -> . expression PLUS expression
+    (21) expression -> . expression MINUS expression
+    (22) expression -> . expression BY expression
+    (23) expression -> . expression DIVISION expression
+    (24) expression -> . L_PAR expression R_PAR
+    (25) expression -> . NUMBER
+    (26) expression -> . STRING
+    (27) expression -> . FLOAT
+    (28) expression -> . listArray
+    (29) expression -> . L_BRACKET expressionList R_BRACKET
+    (30) listArray -> . listArray L_BRACKET expression R_BRACKET
+    (31) listArray -> . listArray DOT ID
+    (32) listArray -> . ID
+
+    L_PAR           shift and go to state 21
+    NUMBER          shift and go to state 22
+    STRING          shift and go to state 23
+    FLOAT           shift and go to state 24
+    L_BRACKET       shift and go to state 26
+    ID              shift and go to state 19
+
+    expression                     shift and go to state 67
+    listArray                      shift and go to state 25
+
+state 62
+
+    (12) declaration -> CONST ID EQUAL expression SEMICOLON .
+
+    CONSOLE         reduce using rule 12 (declaration -> CONST ID EQUAL expression SEMICOLON .)
+    VAR             reduce using rule 12 (declaration -> CONST ID EQUAL expression SEMICOLON .)
+    CONST           reduce using rule 12 (declaration -> CONST ID EQUAL expression SEMICOLON .)
+    ID              reduce using rule 12 (declaration -> CONST ID EQUAL expression SEMICOLON .)
+    $end            reduce using rule 12 (declaration -> CONST ID EQUAL expression SEMICOLON .)
+
+
+state 63
+
+    (7) print -> CONSOLE DOT LOG L_PAR expressionList R_PAR . SEMICOLON
+
+    SEMICOLON       shift and go to state 68
+
+
+state 64
+
+    (8) declaration -> VAR ID COLON type EQUAL expression . SEMICOLON
+    (20) expression -> expression . PLUS expression
+    (21) expression -> expression . MINUS expression
+    (22) expression -> expression . BY expression
+    (23) expression -> expression . DIVISION expression
+
+    SEMICOLON       shift and go to state 69
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    BY              shift and go to state 39
+    DIVISION        shift and go to state 40
+
+
+state 65
+
+    (30) listArray -> listArray L_BRACKET expression R_BRACKET .
+
+    L_BRACKET       reduce using rule 30 (listArray -> listArray L_BRACKET expression R_BRACKET .)
+    DOT             reduce using rule 30 (listArray -> listArray L_BRACKET expression R_BRACKET .)
+    SEMICOLON       reduce using rule 30 (listArray -> listArray L_BRACKET expression R_BRACKET .)
+    PLUS            reduce using rule 30 (listArray -> listArray L_BRACKET expression R_BRACKET .)
+    MINUS           reduce using rule 30 (listArray -> listArray L_BRACKET expression R_BRACKET .)
+    BY              reduce using rule 30 (listArray -> listArray L_BRACKET expression R_BRACKET .)
+    DIVISION        reduce using rule 30 (listArray -> listArray L_BRACKET expression R_BRACKET .)
+    R_PAR           reduce using rule 30 (listArray -> listArray L_BRACKET expression R_BRACKET .)
+    R_BRACKET       reduce using rule 30 (listArray -> listArray L_BRACKET expression R_BRACKET .)
+    COMMA           reduce using rule 30 (listArray -> listArray L_BRACKET expression R_BRACKET .)
+
+
+state 66
+
+    (18) expressionList -> expressionList COMMA expression .
+    (20) expression -> expression . PLUS expression
+    (21) expression -> expression . MINUS expression
+    (22) expression -> expression . BY expression
+    (23) expression -> expression . DIVISION expression
+
+    R_BRACKET       reduce using rule 18 (expressionList -> expressionList COMMA expression .)
+    COMMA           reduce using rule 18 (expressionList -> expressionList COMMA expression .)
+    R_PAR           reduce using rule 18 (expressionList -> expressionList COMMA expression .)
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    BY              shift and go to state 39
+    DIVISION        shift and go to state 40
+
+
+state 67
+
+    (11) declaration -> CONST ID COLON type EQUAL expression . SEMICOLON
+    (20) expression -> expression . PLUS expression
+    (21) expression -> expression . MINUS expression
+    (22) expression -> expression . BY expression
+    (23) expression -> expression . DIVISION expression
+
+    SEMICOLON       shift and go to state 70
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    BY              shift and go to state 39
+    DIVISION        shift and go to state 40
+
+
+state 68
+
+    (7) print -> CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON .
+
+    CONSOLE         reduce using rule 7 (print -> CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON .)
+    VAR             reduce using rule 7 (print -> CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON .)
+    CONST           reduce using rule 7 (print -> CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON .)
+    ID              reduce using rule 7 (print -> CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON .)
+    $end            reduce using rule 7 (print -> CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON .)
+
+
+state 69
+
+    (8) declaration -> VAR ID COLON type EQUAL expression SEMICOLON .
+
+    CONSOLE         reduce using rule 8 (declaration -> VAR ID COLON type EQUAL expression SEMICOLON .)
+    VAR             reduce using rule 8 (declaration -> VAR ID COLON type EQUAL expression SEMICOLON .)
+    CONST           reduce using rule 8 (declaration -> VAR ID COLON type EQUAL expression SEMICOLON .)
+    ID              reduce using rule 8 (declaration -> VAR ID COLON type EQUAL expression SEMICOLON .)
+    $end            reduce using rule 8 (declaration -> VAR ID COLON type EQUAL expression SEMICOLON .)
+
+
+state 70
+
+    (11) declaration -> CONST ID COLON type EQUAL expression SEMICOLON .
+
+    CONSOLE         reduce using rule 11 (declaration -> CONST ID COLON type EQUAL expression SEMICOLON .)
+    VAR             reduce using rule 11 (declaration -> CONST ID COLON type EQUAL expression SEMICOLON .)
+    CONST           reduce using rule 11 (declaration -> CONST ID COLON type EQUAL expression SEMICOLON .)
+    ID              reduce using rule 11 (declaration -> CONST ID COLON type EQUAL expression SEMICOLON .)
+    $end            reduce using rule 11 (declaration -> CONST ID COLON type EQUAL expression SEMICOLON .)
+

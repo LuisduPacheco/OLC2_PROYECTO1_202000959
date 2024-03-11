@@ -4,7 +4,7 @@ from environment.types import ExpressionType
 
 
 class Primitive(Expression):
-    def __init__(self, line, column, value, type_primitive: ExpressionType):
+    def __init__(self, line: int, column: int, value, type_primitive: ExpressionType):
         self.line = line
         self.column = column
         self.value = value

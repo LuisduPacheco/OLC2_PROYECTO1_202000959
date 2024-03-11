@@ -1,10 +1,7 @@
-from interfaces.instruction import Instruction
 from environment.types import ExpressionType
-
-
-class Declaration(Instruction):
-
-    def __init__(self, line: int, column: int, identifier, type_exp, expression):
+from interfaces.instruction import Instruction
+class Constants(Instruction):
+    def __init__(self, line, column, identifier, type_exp, expression):
         self.line = line
         self.column = column
         self.identifier = identifier
@@ -26,7 +23,7 @@ class Declaration(Instruction):
             if result.type != self.type_exp:
                 ast.set_errors(f"Error: Type incorrect{self.type_exp}")
                 return
-            env.save_variable(ast, self.identifier, result)
+            env.save_constant(ast, self.identifier, result)
         else:
             # Get symbol
             print(self.expression)
@@ -37,5 +34,4 @@ class Declaration(Instruction):
                 return
 
             # Add to the environment
-            env.save_variable(ast, self.identifier, result)
-
+            env.save_constant(ast, self.identifier, result)

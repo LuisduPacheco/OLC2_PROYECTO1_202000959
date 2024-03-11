@@ -1,0 +1,13 @@
+s       : block
+
+block   : block instruction
+        | instruction
+
+instrucction : print
+            | ifinstruction
+            | whileinstruction
+            | declaration
+            | arraydeclaration
+            | assignment
+            | breakstmt
+            | continuestmt

@@ -1,1 +1,11 @@
 HOla esta es una prueba.
+var str1: string = "Hola";
+str1 = "Hi";
+console.log(str1);
+
+var name = "Luis";
+console.log(name);
+
+var nam1 : number = 150;
+console.log(nam1);
+console.log(name);

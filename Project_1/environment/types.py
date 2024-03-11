@@ -9,4 +9,7 @@ class ExpressionType(Enum):
     ARRAY = 4
     STRUCT = 5
     NULL = 6
+    BREAK = 7
+    CONTINUE = 8
+    RETURN = 9
     

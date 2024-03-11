@@ -1,14 +1,18 @@
+from instructions.assignment import Assignment
 from ply import lex as Lex
 from ply import yacc as yacc
 
 
-from expressions.access import Acces
+from expressions.access import Access
 from expressions.primitive import Primitive
 from expressions.operation import Operation
+from expressions.array_access import ArrayAccess
+from expressions.array import Array
 from environment.types import ExpressionType
+
 from instructions.print import Print
 from instructions.declaration import Declaration
-
+from instructions.declare_constants import Constants
 
 class codeParams:
     def __init__(self, line, column):
@@ -21,44 +25,70 @@ reserved_words: dict[str, str] = {
     'console': 'CONSOLE',
     'log': 'LOG',
     'var': 'VAR',
+    'const': 'CONST',
     'float': 'FLOAT',
     'number': 'NUMBER',
     'string': 'STRING',
-    'bool': 'BOOL'
+    'bool': 'BOOL',
+    'if': 'IF',
+    'while': 'WHILE',
+    'break': 'BREAK',
+    'continue': 'CONTINUE',
+    'return': 'RETURN'
 }
 
 tokens: list[str] = [
+                        'DOT',
                         'L_PAR',
                         'R_PAR',
                         'PLUS',
                         'MINUS',
                         'BY',
                         'DIVISION',
-                        'DOT',
                         'COLON',
                         'SEMICOLON',
                         'COMMA',
                         'INT',
                         'DECIMAL',
                         'EQUAL',
-                        'ID',
+                        'EQEQUAL',
+                        'DIF',
                         'L_BRACKET',
                         'R_BRACKET',
+                        'L_KEY',
+                        'R_KEY',
+                        'GREATER',
+                        'LESS',
+                        'GREATER_T',
+                        'LESS_T',
+                        'AND',
+                        'OR',
+                        'ID'
                     ] + list(reserved_words.values())
 
+t_DOT = r'\.'
 t_L_PAR = r'\('
 t_R_PAR = r'\)'
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_BY = r'\*'
 t_DIVISION = r'/'
-t_DOT = r'\.'
 t_COLON = r':'
 t_COMMA = r','
 t_SEMICOLON = r';'
 t_EQUAL = r'='
+t_EQEQUAL = r'=='
+t_DIF = r'!='
 t_L_BRACKET = r'\['
 t_R_BRACKET = r'\]'
+t_L_KEY = r'\{'
+t_R_KEY = r'\}'
+t_GREATER = r'>'
+t_LESS = r'<'
+t_GREATER_T = r'>='
+t_LESS_T = r'<='
+t_AND = r'&&'
+t_OR = r'\|\|'
 
 
 def t_STRING(t):
@@ -75,30 +105,36 @@ def t_STRING(t):
 
 
 def t_NUMBER(t):
-    r"""\d+"""
+    r"""\d+(\.\d+)?"""
     try:
-        int_value: int = int(t.value)
-        line = t.lexer.lexdata.rfind('\n', 0, t.lexpos) + 1
-        column = t.lexpos - line
-        t.value = Primitive(line, column, int_value, ExpressionType.NUMBER)
+        if '.' in t.value:
+            float_value = float(t.value)
+            line: int = t.lexer.lexdata.rfind('\n', 0, t.lexpos) + 1
+            column: int = t.lexpos - line
+            t.value = Primitive(line, column, float_value, ExpressionType.FLOAT)
+        else:
+            int_value: int = int(t.value)
+            line: int = t.lexer.lexdata.rfind('\n', 0, t.lexpos) + 1
+            column: int = t.lexpos - line
+            t.value = Primitive(line, column, int_value, ExpressionType.NUMBER)
     except ValueError:
-        print(f"Error to convert int: {t.value}")
+        print(f"Error to convert number: {t.value}")
         t.value = Primitive(0, 0, None, ExpressionType.NULL)
     return t
+
 
 
 def t_FLOAT(t):
     r"""\d+\.\d+"""
     try:
-        float_value: float = float(t.value)
-        line = t.lexer.lexdata.rfind('\n', 0, t.lexpos) + 1
-        column = t.lexpos - line
+        float_value = float(t.value)
+        line: int = t.lexer.lexdata.rfind('\n', 0, t.lexpos) + 1
+        column: int = t.lexpos - line
         t.value = Primitive(line, column, float_value, ExpressionType.FLOAT)
     except ValueError:
         print(f"Error to convert float: {t.value}")
         t.value = Primitive(0, 0, None, ExpressionType.NULL)
     return t
-
 
 def t_ID(t):
     r"""[a-zA-Z_][a-zA-Z_0-9]*"""
@@ -129,30 +165,76 @@ def t_error(t):
 precedence = (
     ('left', 'PLUS', 'MINUS'),
     ('left', 'BY', 'DIVISION'),
+    ('left', 'GREATER', 'LESS'),
+    ('left', 'GREATER_T', 'LESS_T'),
+    ('left', 'AND'),
+    ('left', 'OR')
 )
 
 
 #START
-def p_instructions_list(t):
-    """instructions : instructions instruction
-                    | instruction"""
-    if 2 < len(t):
+def p_start(t):
+    """s : block"""
+    t[0] = t[1]
+
+
+def p_instruction_block(t):
+    """block : block instruction
+            | instruction"""
+    if len(t) > 2:
         t[1].append(t[2])
         t[0] = t[1]
     else:
         t[0] = [t[1]]
 
 
+def p_instruction_list(t):
+    """instruction : print
+                | declaration
+                | assignment"""
+    t[0] = t[1]
+
+
 def p_instruction_console(t):
-    """instruction : CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON"""
+    """print : CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON"""
     params = get_params(t)
     t[0] = Print(params.line, params.column, t[5])
 
 
 def p_instruction_declaration(t):
-    """instruction : VAR ID COLON type EQUAL expression SEMICOLON"""
+    """declaration : VAR ID COLON type EQUAL expression SEMICOLON
+                    | VAR ID EQUAL expression SEMICOLON
+                    """
+    if len(t) == 8:
+        params = get_params(t)
+        t[0] = Declaration(params.line, params.column, t[2], t[4], t[6])
+    elif len(t) == 6:
+        params = get_params(t)
+        t[0] = Declaration(params.line, params.column, t[2], None, t[4])
+
+
+def p_instruction_declaration_type(t):
+    """declaration : VAR ID COLON type SEMICOLON"""
     params = get_params(t)
-    t[0] = Declaration(params.line, params.column, t[2], t[4], t[6])
+    t[0] = Declaration(params.line, params.column, t[2], t[4], None)
+
+
+def p_instruction_declare_constants(t):
+    """declaration : CONST ID COLON type EQUAL expression SEMICOLON
+                    | CONST ID EQUAL expression SEMICOLON
+                    """
+    if len(t) == 8:
+        params = get_params(t)
+        t[0] = Constants(params.line, params.column, t[2], t[4], t[6])
+    elif len(t) == 6:
+        params = get_params(t)
+        t[0] = Constants(params.line, params.column, t[2], None, t[4])
+
+
+def p_instruction_assignment(t):
+    """assignment : ID EQUAL expression SEMICOLON"""
+    params = get_params(t)
+    t[0] = Assignment(params.line, params.column, t[1], t[3])
 
 
 def p_type_production(t):
@@ -217,27 +299,28 @@ def p_expression_group(t):
 def p_expression_primitive(t):
     """expression : NUMBER
                 | STRING
+                | FLOAT
                 | listArray"""
     t[0] = t[1]
 
 
+def p_expression_array_primitive(t):
+    """expression : L_BRACKET expressionList R_BRACKET"""
+    params = get_params(t)
+    t[0] = Array(params.line, params.column, t[2])
+
+
 def p_expression_list_array(t):
-    """listArray : listArray DOT ID
-                | listArray listAccessArray
+    """listArray : listArray L_BRACKET expression R_BRACKET
+                | listArray DOT ID
                 | ID"""
     params = get_params(t)
-    if len(t) > 3:
-        print("ToDo: ArrayAccess")
-    elif len(t) > 2:
-        print("ToDo: ArrayAccess")
+    if len(t) > 4:
+        t[0] = ArrayAccess(params.line, params.column, t[1], t[3])
+    elif len(t) > 3:
+        print("ToDo: Interface Access")
     else:
-        t[0] = Acces(params.line, params.column, t[1])
-
-
-def p_expression_list_access_array(t):
-    """listAccessArray : listAccessArray L_BRACKET expression R_BRACKET
-                    | L_BRACKET expression R_BRACKET"""
-    t[0] = t[1]
+        t[0] = Access(params.line, params.column, t[1])
 
 
 def p_error(p):
@@ -245,6 +328,7 @@ def p_error(p):
         print(f"Syntax error, line: {p.lineno}, column: {p.lexpos}\nt expected: '{p.value}'")
     else:
         print("Syntax Error.")
+
 
 def get_params(t):
     line = t.lexer.lineno

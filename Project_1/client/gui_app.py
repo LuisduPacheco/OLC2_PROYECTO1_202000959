@@ -144,20 +144,21 @@ class Frame(tk.Frame):
         ast = Ast()
         parser = Parser()
         instructions_arr = parser.interpreter(input_data)
+
         for instruction in instructions_arr:
             instruction.execute(ast, env_initial)
+
         self.scrolledtext2.delete("1.0", tk.END)
         self.scrolledtext2.insert("1.0", ast.get_console())
 
     def show_symbols(self, console):
         print("Symbols")
 
-        print(console)
+        # print(console)
         self.scrolledtext2.insert("1.0", console)
 
-
     def show_errors(self):
-        print("Show Mongo xD")
+        print("Show xD")
 
 
     def help(self):
