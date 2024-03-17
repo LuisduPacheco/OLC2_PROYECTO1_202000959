@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftBYDIVISIONleftGREATERLESSleftGREATER_TLESS_TleftANDleftORAND BOOL BREAK BY COLON COMMA CONSOLE CONST CONTINUE DECIMAL DIF DIVISION DOT EQEQUAL EQUAL FLOAT GREATER GREATER_T ID IF INT LESS LESS_T LOG L_BRACKET L_KEY L_PAR MINUS NUMBER OR PLUS RETURN R_BRACKET R_KEY R_PAR SEMICOLON STRING VAR WHILEs : blockblock : block instruction\n            | instructioninstruction : print\n                | declaration\n                | assignmentprint : CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLONdeclaration : VAR ID COLON type EQUAL expression SEMICOLON\n                    | VAR ID EQUAL expression SEMICOLON\n                    declaration : VAR ID COLON type SEMICOLONdeclaration : CONST ID COLON type EQUAL expression SEMICOLON\n                    | CONST ID EQUAL expression SEMICOLON\n                    assignment : ID EQUAL expression SEMICOLONtype : NUMBER\n            | FLOAT\n            | STRING\n            | BOOLexpressionList : expressionList COMMA expression\n                    | expressionexpression : expression PLUS expressionexpression : expression MINUS expressionexpression : expression BY expressionexpression : expression DIVISION expressionexpression : L_PAR expression R_PARexpression : NUMBER\n                | STRING\n                | FLOAT\n                | listArrayexpression : L_BRACKET expressionList R_BRACKETlistArray : listArray L_BRACKET expression R_BRACKET\n                | listArray DOT ID\n                | ID'
+_lr_signature = 'leftPLUSMINUSleftBYDIVISIONleftGREATERLESSleftGREATER_ELESS_EleftANDleftORleftADD_ASSIGNSUB_ASSIGNADD_ASSIGN AND BOOLEAN BREAK BY CHAR COLON COMMA CONSOLE CONST CONTINUE DECIMAL DIF DIVISION DOT EQEQUAL EQUAL FLOAT GREATER GREATER_E ID IF INT LESS LESS_E LOG L_BRACKET L_KEY L_PAR MINUS MODULO NUMBER OR PLUS RETURN R_BRACKET R_KEY R_PAR SEMICOLON STRING SUB_ASSIGN VAR WHILEs : blockblock : block instruction\n            | instructioninstruction : print\n                | declaration\n                | assignmentprint : CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLONdeclaration : VAR ID COLON type EQUAL expression SEMICOLON\n                    | VAR ID EQUAL expression SEMICOLON\n                    declaration : VAR ID COLON type SEMICOLONdeclaration : CONST ID COLON type EQUAL expression SEMICOLON\n                    | CONST ID EQUAL expression SEMICOLON\n                    assignment : ID EQUAL expression SEMICOLON\n                | ID ADD_ASSIGN expression SEMICOLON\n                | ID SUB_ASSIGN expression SEMICOLONtype : NUMBER\n            | FLOAT\n            | STRING\n            | BOOLEAN\n            | CHARexpressionList : expressionList COMMA expression\n                    | expressionexpression : expression PLUS expressionexpression : expression MINUS expressionexpression : expression BY expressionexpression : expression DIVISION expressionexpression : expression MODULO expressionexpression : expression EQEQUAL expressionexpression : expression DIF expressionexpression : expression GREATER expressionexpression : expression GREATER_E expressionexpression : expression LESS expressionexpression : expression LESS_E expressionexpression : L_PAR expression R_PARexpression : NUMBER\n                | STRING\n                | FLOAT\n                | CHAR\n                | BOOLEAN\n                | listArrayexpression : L_BRACKET expressionList R_BRACKETlistArray : listArray L_BRACKET expression R_BRACKET\n                | listArray DOT ID\n                | ID'
     
-_lr_action_items = {'CONSOLE':([0,2,3,4,5,6,11,36,50,51,62,68,69,70,],[7,7,-3,-4,-5,-6,-2,-13,-10,-9,-12,-7,-8,-11,]),'VAR':([0,2,3,4,5,6,11,36,50,51,62,68,69,70,],[8,8,-3,-4,-5,-6,-2,-13,-10,-9,-12,-7,-8,-11,]),'CONST':([0,2,3,4,5,6,11,36,50,51,62,68,69,70,],[10,10,-3,-4,-5,-6,-2,-13,-10,-9,-12,-7,-8,-11,]),'ID':([0,2,3,4,5,6,8,10,11,14,18,21,26,28,29,36,37,38,39,40,42,43,49,50,51,60,61,62,68,69,70,],[9,9,-3,-4,-5,-6,13,15,-2,19,19,19,19,19,19,-13,19,19,19,19,19,58,19,-10,-9,19,19,-12,-7,-8,-11,]),'$end':([1,2,3,4,5,6,11,36,50,51,62,68,69,70,],[0,-1,-3,-4,-5,-6,-2,-13,-10,-9,-12,-7,-8,-11,]),'DOT':([7,19,25,58,65,],[12,-32,43,-31,-30,]),'EQUAL':([9,13,15,30,31,32,33,34,46,],[14,18,28,49,-14,-15,-16,-17,61,]),'LOG':([12,],[16,]),'COLON':([13,15,],[17,27,]),'L_PAR':([14,16,18,21,26,28,29,37,38,39,40,42,49,60,61,],[21,29,21,21,21,21,21,21,21,21,21,21,21,21,21,]),'NUMBER':([14,17,18,21,26,27,28,29,37,38,39,40,42,49,60,61,],[22,31,22,22,22,31,22,22,22,22,22,22,22,22,22,22,]),'STRING':([14,17,18,21,26,27,28,29,37,38,39,40,42,49,60,61,],[23,33,23,23,23,33,23,23,23,23,23,23,23,23,23,23,]),'FLOAT':([14,17,18,21,26,27,28,29,37,38,39,40,42,49,60,61,],[24,32,24,24,24,32,24,24,24,24,24,24,24,24,24,24,]),'L_BRACKET':([14,18,19,21,25,26,28,29,37,38,39,40,42,49,58,60,61,65,],[26,26,-32,26,42,26,26,26,26,26,26,26,26,26,-31,26,26,-30,]),'BOOL':([17,27,],[34,34,]),'SEMICOLON':([19,20,22,23,24,25,30,31,32,33,34,35,47,52,53,54,55,56,58,59,63,64,65,67,],[-32,36,-25,-26,-27,-28,50,-14,-15,-16,-17,51,62,-20,-21,-22,-23,-24,-31,-29,68,69,-30,70,]),'PLUS':([19,20,22,23,24,25,35,41,45,47,52,53,54,55,56,57,58,59,64,65,66,67,],[-32,37,-25,-26,-27,-28,37,37,37,37,-20,-21,-22,-23,-24,37,-31,-29,37,-30,37,37,]),'MINUS':([19,20,22,23,24,25,35,41,45,47,52,53,54,55,56,57,58,59,64,65,66,67,],[-32,38,-25,-26,-27,-28,38,38,38,38,-20,-21,-22,-23,-24,38,-31,-29,38,-30,38,38,]),'BY':([19,20,22,23,24,25,35,41,45,47,52,53,54,55,56,57,58,59,64,65,66,67,],[-32,39,-25,-26,-27,-28,39,39,39,39,39,39,-22,-23,-24,39,-31,-29,39,-30,39,39,]),'DIVISION':([19,20,22,23,24,25,35,41,45,47,52,53,54,55,56,57,58,59,64,65,66,67,],[-32,40,-25,-26,-27,-28,40,40,40,40,40,40,-22,-23,-24,40,-31,-29,40,-30,40,40,]),'R_PAR':([19,22,23,24,25,41,45,48,52,53,54,55,56,58,59,65,66,],[-32,-25,-26,-27,-28,56,-19,63,-20,-21,-22,-23,-24,-31,-29,-30,-18,]),'R_BRACKET':([19,22,23,24,25,44,45,52,53,54,55,56,57,58,59,65,66,],[-32,-25,-26,-27,-28,59,-19,-20,-21,-22,-23,-24,65,-31,-29,-30,-18,]),'COMMA':([19,22,23,24,25,44,45,48,52,53,54,55,56,58,59,65,66,],[-32,-25,-26,-27,-28,60,-19,60,-20,-21,-22,-23,-24,-31,-29,-30,-18,]),}
+_lr_action_items = {'CONSOLE':([0,2,3,4,5,6,11,43,60,61,66,67,85,91,92,93,],[7,7,-3,-4,-5,-6,-2,-13,-14,-15,-10,-9,-12,-7,-8,-11,]),'VAR':([0,2,3,4,5,6,11,43,60,61,66,67,85,91,92,93,],[8,8,-3,-4,-5,-6,-2,-13,-14,-15,-10,-9,-12,-7,-8,-11,]),'CONST':([0,2,3,4,5,6,11,43,60,61,66,67,85,91,92,93,],[10,10,-3,-4,-5,-6,-2,-13,-14,-15,-10,-9,-12,-7,-8,-11,]),'ID':([0,2,3,4,5,6,8,10,11,14,15,16,20,23,30,34,35,43,44,45,46,47,48,49,50,51,52,53,54,56,57,60,61,65,66,67,83,84,85,91,92,93,],[9,9,-3,-4,-5,-6,13,17,-2,21,21,21,21,21,21,21,21,-13,21,21,21,21,21,21,21,21,21,21,21,21,81,-14,-15,21,-10,-9,21,21,-12,-7,-8,-11,]),'$end':([1,2,3,4,5,6,11,43,60,61,66,67,85,91,92,93,],[0,-1,-3,-4,-5,-6,-2,-13,-14,-15,-10,-9,-12,-7,-8,-11,]),'DOT':([7,21,29,81,88,],[12,-44,57,-43,-42,]),'EQUAL':([9,13,17,36,37,38,39,40,41,62,],[14,20,34,65,-16,-17,-18,-19,-20,84,]),'ADD_ASSIGN':([9,],[15,]),'SUB_ASSIGN':([9,],[16,]),'LOG':([12,],[18,]),'COLON':([13,17,],[19,33,]),'L_PAR':([14,15,16,18,20,23,30,34,35,44,45,46,47,48,49,50,51,52,53,54,56,65,83,84,],[23,23,23,35,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,]),'NUMBER':([14,15,16,19,20,23,30,33,34,35,44,45,46,47,48,49,50,51,52,53,54,56,65,83,84,],[24,24,24,37,24,24,24,37,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,]),'STRING':([14,15,16,19,20,23,30,33,34,35,44,45,46,47,48,49,50,51,52,53,54,56,65,83,84,],[25,25,25,39,25,25,25,39,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,]),'FLOAT':([14,15,16,19,20,23,30,33,34,35,44,45,46,47,48,49,50,51,52,53,54,56,65,83,84,],[26,26,26,38,26,26,26,38,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,]),'CHAR':([14,15,16,19,20,23,30,33,34,35,44,45,46,47,48,49,50,51,52,53,54,56,65,83,84,],[27,27,27,41,27,27,27,41,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,]),'BOOLEAN':([14,15,16,19,20,23,30,33,34,35,44,45,46,47,48,49,50,51,52,53,54,56,65,83,84,],[28,28,28,40,28,28,28,40,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,]),'L_BRACKET':([14,15,16,20,21,23,29,30,34,35,44,45,46,47,48,49,50,51,52,53,54,56,65,81,83,84,88,],[30,30,30,30,-44,30,56,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,-43,30,30,-42,]),'SEMICOLON':([21,22,24,25,26,27,28,29,31,32,36,37,38,39,40,41,42,63,68,69,70,71,72,73,74,75,76,77,78,79,81,82,86,87,88,90,],[-44,43,-35,-36,-37,-38,-39,-40,60,61,66,-16,-17,-18,-19,-20,67,85,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-43,-41,91,92,-42,93,]),'PLUS':([21,22,24,25,26,27,28,29,31,32,42,55,59,63,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,87,88,89,90,],[-44,44,-35,-36,-37,-38,-39,-40,44,44,44,44,44,44,-23,-24,-25,-26,44,44,44,-30,-31,-32,-33,-34,44,-43,-41,44,-42,44,44,]),'MINUS':([21,22,24,25,26,27,28,29,31,32,42,55,59,63,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,87,88,89,90,],[-44,45,-35,-36,-37,-38,-39,-40,45,45,45,45,45,45,-23,-24,-25,-26,45,45,45,-30,-31,-32,-33,-34,45,-43,-41,45,-42,45,45,]),'BY':([21,22,24,25,26,27,28,29,31,32,42,55,59,63,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,87,88,89,90,],[-44,46,-35,-36,-37,-38,-39,-40,46,46,46,46,46,46,46,46,-25,-26,46,46,46,-30,-31,-32,-33,-34,46,-43,-41,46,-42,46,46,]),'DIVISION':([21,22,24,25,26,27,28,29,31,32,42,55,59,63,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,87,88,89,90,],[-44,47,-35,-36,-37,-38,-39,-40,47,47,47,47,47,47,47,47,-25,-26,47,47,47,-30,-31,-32,-33,-34,47,-43,-41,47,-42,47,47,]),'MODULO':([21,22,24,25,26,27,28,29,31,32,42,55,59,63,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,87,88,89,90,],[-44,48,-35,-36,-37,-38,-39,-40,48,48,48,48,48,48,-23,-24,-25,-26,48,48,48,-30,-31,-32,-33,-34,48,-43,-41,48,-42,48,48,]),'EQEQUAL':([21,22,24,25,26,27,28,29,31,32,42,55,59,63,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,87,88,89,90,],[-44,49,-35,-36,-37,-38,-39,-40,49,49,49,49,49,49,-23,-24,-25,-26,49,49,49,-30,-31,-32,-33,-34,49,-43,-41,49,-42,49,49,]),'DIF':([21,22,24,25,26,27,28,29,31,32,42,55,59,63,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,87,88,89,90,],[-44,50,-35,-36,-37,-38,-39,-40,50,50,50,50,50,50,-23,-24,-25,-26,50,50,50,-30,-31,-32,-33,-34,50,-43,-41,50,-42,50,50,]),'GREATER':([21,22,24,25,26,27,28,29,31,32,42,55,59,63,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,87,88,89,90,],[-44,51,-35,-36,-37,-38,-39,-40,51,51,51,51,51,51,51,51,51,51,51,51,51,-30,-31,-32,-33,-34,51,-43,-41,51,-42,51,51,]),'GREATER_E':([21,22,24,25,26,27,28,29,31,32,42,55,59,63,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,87,88,89,90,],[-44,52,-35,-36,-37,-38,-39,-40,52,52,52,52,52,52,52,52,52,52,52,52,52,52,-31,52,-33,-34,52,-43,-41,52,-42,52,52,]),'LESS':([21,22,24,25,26,27,28,29,31,32,42,55,59,63,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,87,88,89,90,],[-44,53,-35,-36,-37,-38,-39,-40,53,53,53,53,53,53,53,53,53,53,53,53,53,-30,-31,-32,-33,-34,53,-43,-41,53,-42,53,53,]),'LESS_E':([21,22,24,25,26,27,28,29,31,32,42,55,59,63,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,87,88,89,90,],[-44,54,-35,-36,-37,-38,-39,-40,54,54,54,54,54,54,54,54,54,54,54,54,54,54,-31,54,-33,-34,54,-43,-41,54,-42,54,54,]),'R_PAR':([21,24,25,26,27,28,29,55,59,64,68,69,70,71,72,73,74,75,76,77,78,79,81,82,88,89,],[-44,-35,-36,-37,-38,-39,-40,79,-22,86,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-43,-41,-42,-21,]),'R_BRACKET':([21,24,25,26,27,28,29,58,59,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,88,89,],[-44,-35,-36,-37,-38,-39,-40,82,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,88,-43,-41,-42,-21,]),'COMMA':([21,24,25,26,27,28,29,58,59,64,68,69,70,71,72,73,74,75,76,77,78,79,81,82,88,89,],[-44,-35,-36,-37,-38,-39,-40,83,-22,83,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-43,-41,-42,-21,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'s':([0,],[1,]),'block':([0,],[2,]),'instruction':([0,2,],[3,11,]),'print':([0,2,],[4,4,]),'declaration':([0,2,],[5,5,]),'assignment':([0,2,],[6,6,]),'expression':([14,18,21,26,28,29,37,38,39,40,42,49,60,61,],[20,35,41,45,47,45,52,53,54,55,57,64,66,67,]),'listArray':([14,18,21,26,28,29,37,38,39,40,42,49,60,61,],[25,25,25,25,25,25,25,25,25,25,25,25,25,25,]),'type':([17,27,],[30,46,]),'expressionList':([26,29,],[44,48,]),}
+_lr_goto_items = {'s':([0,],[1,]),'block':([0,],[2,]),'instruction':([0,2,],[3,11,]),'print':([0,2,],[4,4,]),'declaration':([0,2,],[5,5,]),'assignment':([0,2,],[6,6,]),'expression':([14,15,16,20,23,30,34,35,44,45,46,47,48,49,50,51,52,53,54,56,65,83,84,],[22,31,32,42,55,59,63,59,68,69,70,71,72,73,74,75,76,77,78,80,87,89,90,]),'listArray':([14,15,16,20,23,30,34,35,44,45,46,47,48,49,50,51,52,53,54,56,65,83,84,],[29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,]),'type':([19,33,],[36,62,]),'expressionList':([30,35,],[58,64,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,36 +27,48 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> s","S'",1,None,None,None),
-  ('s -> block','s',1,'p_start','parser.py',170),
-  ('block -> block instruction','block',2,'p_instruction_block','parser.py',175),
-  ('block -> instruction','block',1,'p_instruction_block','parser.py',176),
-  ('instruction -> print','instruction',1,'p_instruction_list','parser.py',185),
-  ('instruction -> declaration','instruction',1,'p_instruction_list','parser.py',186),
-  ('instruction -> assignment','instruction',1,'p_instruction_list','parser.py',187),
-  ('print -> CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON','print',7,'p_instruction_console','parser.py',192),
-  ('declaration -> VAR ID COLON type EQUAL expression SEMICOLON','declaration',7,'p_instruction_declaration','parser.py',198),
-  ('declaration -> VAR ID EQUAL expression SEMICOLON','declaration',5,'p_instruction_declaration','parser.py',199),
-  ('declaration -> VAR ID COLON type SEMICOLON','declaration',5,'p_instruction_declaration_type','parser.py',210),
-  ('declaration -> CONST ID COLON type EQUAL expression SEMICOLON','declaration',7,'p_instruction_declare_constants','parser.py',216),
-  ('declaration -> CONST ID EQUAL expression SEMICOLON','declaration',5,'p_instruction_declare_constants','parser.py',217),
-  ('assignment -> ID EQUAL expression SEMICOLON','assignment',4,'p_instruction_assignment','parser.py',228),
-  ('type -> NUMBER','type',1,'p_type_production','parser.py',234),
-  ('type -> FLOAT','type',1,'p_type_production','parser.py',235),
-  ('type -> STRING','type',1,'p_type_production','parser.py',236),
-  ('type -> BOOL','type',1,'p_type_production','parser.py',237),
-  ('expressionList -> expressionList COMMA expression','expressionList',3,'p_expression_list','parser.py',253),
-  ('expressionList -> expression','expressionList',1,'p_expression_list','parser.py',254),
-  ('expression -> expression PLUS expression','expression',3,'p_expression_add','parser.py',264),
-  ('expression -> expression MINUS expression','expression',3,'p_expression_sub','parser.py',270),
-  ('expression -> expression BY expression','expression',3,'p_expression_mult','parser.py',276),
-  ('expression -> expression DIVISION expression','expression',3,'p_expression_div','parser.py',282),
-  ('expression -> L_PAR expression R_PAR','expression',3,'p_expression_group','parser.py',288),
-  ('expression -> NUMBER','expression',1,'p_expression_primitive','parser.py',293),
-  ('expression -> STRING','expression',1,'p_expression_primitive','parser.py',294),
-  ('expression -> FLOAT','expression',1,'p_expression_primitive','parser.py',295),
-  ('expression -> listArray','expression',1,'p_expression_primitive','parser.py',296),
-  ('expression -> L_BRACKET expressionList R_BRACKET','expression',3,'p_expression_array_primitive','parser.py',301),
-  ('listArray -> listArray L_BRACKET expression R_BRACKET','listArray',4,'p_expression_list_array','parser.py',307),
-  ('listArray -> listArray DOT ID','listArray',3,'p_expression_list_array','parser.py',308),
-  ('listArray -> ID','listArray',1,'p_expression_list_array','parser.py',309),
+  ('s -> block','s',1,'p_start','parser.py',211),
+  ('block -> block instruction','block',2,'p_instruction_block','parser.py',216),
+  ('block -> instruction','block',1,'p_instruction_block','parser.py',217),
+  ('instruction -> print','instruction',1,'p_instruction_list','parser.py',226),
+  ('instruction -> declaration','instruction',1,'p_instruction_list','parser.py',227),
+  ('instruction -> assignment','instruction',1,'p_instruction_list','parser.py',228),
+  ('print -> CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON','print',7,'p_instruction_console','parser.py',233),
+  ('declaration -> VAR ID COLON type EQUAL expression SEMICOLON','declaration',7,'p_instruction_declaration','parser.py',239),
+  ('declaration -> VAR ID EQUAL expression SEMICOLON','declaration',5,'p_instruction_declaration','parser.py',240),
+  ('declaration -> VAR ID COLON type SEMICOLON','declaration',5,'p_instruction_declaration_type','parser.py',251),
+  ('declaration -> CONST ID COLON type EQUAL expression SEMICOLON','declaration',7,'p_instruction_declare_constants','parser.py',257),
+  ('declaration -> CONST ID EQUAL expression SEMICOLON','declaration',5,'p_instruction_declare_constants','parser.py',258),
+  ('assignment -> ID EQUAL expression SEMICOLON','assignment',4,'p_instruction_assignment','parser.py',269),
+  ('assignment -> ID ADD_ASSIGN expression SEMICOLON','assignment',4,'p_instruction_assignment','parser.py',270),
+  ('assignment -> ID SUB_ASSIGN expression SEMICOLON','assignment',4,'p_instruction_assignment','parser.py',271),
+  ('type -> NUMBER','type',1,'p_type_production','parser.py',281),
+  ('type -> FLOAT','type',1,'p_type_production','parser.py',282),
+  ('type -> STRING','type',1,'p_type_production','parser.py',283),
+  ('type -> BOOLEAN','type',1,'p_type_production','parser.py',284),
+  ('type -> CHAR','type',1,'p_type_production','parser.py',285),
+  ('expressionList -> expressionList COMMA expression','expressionList',3,'p_expression_list','parser.py',303),
+  ('expressionList -> expression','expressionList',1,'p_expression_list','parser.py',304),
+  ('expression -> expression PLUS expression','expression',3,'p_expression_add','parser.py',314),
+  ('expression -> expression MINUS expression','expression',3,'p_expression_sub','parser.py',320),
+  ('expression -> expression BY expression','expression',3,'p_expression_mult','parser.py',326),
+  ('expression -> expression DIVISION expression','expression',3,'p_expression_div','parser.py',332),
+  ('expression -> expression MODULO expression','expression',3,'p_expression_mod','parser.py',338),
+  ('expression -> expression EQEQUAL expression','expression',3,'p_expression_equal','parser.py',344),
+  ('expression -> expression DIF expression','expression',3,'p_expression_different','parser.py',356),
+  ('expression -> expression GREATER expression','expression',3,'p_expression_greater','parser.py',362),
+  ('expression -> expression GREATER_E expression','expression',3,'p_expression_greater_equal','parser.py',368),
+  ('expression -> expression LESS expression','expression',3,'p_expression_less','parser.py',374),
+  ('expression -> expression LESS_E expression','expression',3,'p_expression_less_equal','parser.py',380),
+  ('expression -> L_PAR expression R_PAR','expression',3,'p_expression_group','parser.py',387),
+  ('expression -> NUMBER','expression',1,'p_expression_primitive','parser.py',392),
+  ('expression -> STRING','expression',1,'p_expression_primitive','parser.py',393),
+  ('expression -> FLOAT','expression',1,'p_expression_primitive','parser.py',394),
+  ('expression -> CHAR','expression',1,'p_expression_primitive','parser.py',395),
+  ('expression -> BOOLEAN','expression',1,'p_expression_primitive','parser.py',396),
+  ('expression -> listArray','expression',1,'p_expression_primitive','parser.py',397),
+  ('expression -> L_BRACKET expressionList R_BRACKET','expression',3,'p_expression_array_primitive','parser.py',402),
+  ('listArray -> listArray L_BRACKET expression R_BRACKET','listArray',4,'p_expression_list_array','parser.py',408),
+  ('listArray -> listArray DOT ID','listArray',3,'p_expression_list_array','parser.py',409),
+  ('listArray -> ID','listArray',1,'p_expression_list_array','parser.py',410),
 ]

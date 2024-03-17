@@ -1,3 +1,5 @@
+from expressions.Increase import Increase
+from expressions.decrease import Decrease
 from instructions.assignment import Assignment
 from ply import lex as Lex
 from ply import yacc as yacc
@@ -29,7 +31,8 @@ reserved_words: dict[str, str] = {
     'float': 'FLOAT',
     'number': 'NUMBER',
     'string': 'STRING',
-    'bool': 'BOOL',
+    'char': 'CHAR',
+    'boolean': 'BOOLEAN',
     'if': 'IF',
     'while': 'WHILE',
     'break': 'BREAK',
@@ -38,6 +41,7 @@ reserved_words: dict[str, str] = {
 }
 
 tokens: list[str] = [
+                        'ADD_ASSIGN',
                         'DOT',
                         'L_PAR',
                         'R_PAR',
@@ -59,13 +63,16 @@ tokens: list[str] = [
                         'R_KEY',
                         'GREATER',
                         'LESS',
-                        'GREATER_T',
-                        'LESS_T',
+                        'GREATER_E',
+                        'LESS_E',
                         'AND',
                         'OR',
-                        'ID'
+                        'ID',
+                        'MODULO',
+                        'SUB_ASSIGN'
                     ] + list(reserved_words.values())
 
+t_ADD_ASSIGN = r'[+][=]'
 t_DOT = r'\.'
 t_L_PAR = r'\('
 t_R_PAR = r'\)'
@@ -85,11 +92,12 @@ t_L_KEY = r'\{'
 t_R_KEY = r'\}'
 t_GREATER = r'>'
 t_LESS = r'<'
-t_GREATER_T = r'>='
-t_LESS_T = r'<='
+t_GREATER_E = r'>='
+t_LESS_E = r'<='
 t_AND = r'&&'
 t_OR = r'\|\|'
-
+t_MODULO = r'%'
+t_SUB_ASSIGN = r'\-='
 
 def t_STRING(t):
     r"""\"(.+?)\""""
@@ -100,6 +108,32 @@ def t_STRING(t):
         t.value = Primitive(line, column, str_value.replace('"', ''), ExpressionType.STRING)
     except ValueError:
         print(f"Error to convert string: {t.value}")
+        t.value = Primitive(0, 0, None, ExpressionType.NULL)
+    return t
+
+
+def t_CHAR(t):
+    r"""\'(.)\'"""
+    try:
+        char_value = str(t.value)[1]  # Obtener el carácter entre comillas simples
+        line = t.lexer.lexdata.rfind('\n', 0, t.lexpos) + 1
+        column = t.lexpos - line
+        t.value = Primitive(line, column, char_value.replace("'", ""), ExpressionType.CHAR)
+    except ValueError:
+        print(f"Error al convertir el carácter: {t.value}")
+        t.value = Primitive(0, 0, None, ExpressionType.NULL)
+    return t
+
+
+def t_BOOLEAN(t):
+    r"""(true|false)"""
+    try:
+        bool_value = eval(str(t.value).capitalize())  # Evaluar la cadena como un booleano
+        line = t.lexer.lexdata.rfind('\n', 0, t.lexpos) + 1
+        column = t.lexpos - line
+        t.value = Primitive(line, column, bool_value, ExpressionType.BOOLEAN)
+    except ValueError:
+        print(f"Error al convertir el booleano: {t.value}")
         t.value = Primitive(0, 0, None, ExpressionType.NULL)
     return t
 
@@ -121,7 +155,6 @@ def t_NUMBER(t):
         print(f"Error to convert number: {t.value}")
         t.value = Primitive(0, 0, None, ExpressionType.NULL)
     return t
-
 
 
 def t_FLOAT(t):
@@ -166,9 +199,10 @@ precedence = (
     ('left', 'PLUS', 'MINUS'),
     ('left', 'BY', 'DIVISION'),
     ('left', 'GREATER', 'LESS'),
-    ('left', 'GREATER_T', 'LESS_T'),
+    ('left', 'GREATER_E', 'LESS_E'),
     ('left', 'AND'),
-    ('left', 'OR')
+    ('left', 'OR'),
+    ('left', 'ADD_ASSIGN', 'SUB_ASSIGN')
 )
 
 
@@ -232,16 +266,23 @@ def p_instruction_declare_constants(t):
 
 
 def p_instruction_assignment(t):
-    """assignment : ID EQUAL expression SEMICOLON"""
+    """assignment : ID EQUAL expression SEMICOLON
+                | ID ADD_ASSIGN expression SEMICOLON
+                | ID SUB_ASSIGN expression SEMICOLON"""
     params = get_params(t)
-    t[0] = Assignment(params.line, params.column, t[1], t[3])
-
+    if t[2] == "=":
+        t[0] = Assignment(params.line, params.column, t[1], t[3])
+    elif t[2] == "+=":
+        t[0] = Increase(params.line, params.column, t[1], t[3])
+    elif t[2] == "-=":
+        t[0] = Decrease(params.line, params.column, t[1], t[3])
 
 def p_type_production(t):
     """type : NUMBER
             | FLOAT
             | STRING
-            | BOOL"""
+            | BOOLEAN
+            | CHAR"""
     if t[1] == 'number':
         t[0] = ExpressionType.NUMBER
     if t[1] == 'float':
@@ -250,6 +291,8 @@ def p_type_production(t):
         t[0] = ExpressionType.STRING
     if t[1] == 'bool':
         t[0] = ExpressionType.BOOLEAN
+    if t[1] == 'char':
+        t[0] = ExpressionType.CHAR
 
     print(f"-----------------------")
     print(t[1])
@@ -291,6 +334,55 @@ def p_expression_div(t):
     t[0] = Operation(params.line, params.column, "/", t[1], t[3])
 
 
+def p_expression_mod(t):
+    """expression : expression MODULO expression"""
+    params = get_params(t)
+    t[0] = Operation(params.line, params.column, "%", t[1], t[3])
+
+
+def p_expression_equal(t):
+    """expression : expression EQEQUAL expression"""
+    params = get_params(t)
+    t[0] = Operation(params.line, params.column, "==", t[1], t[3])
+
+
+def p_expression_different(t):
+    """expression : expression DIF expression"""
+    params = get_params(t)
+    t[0] = Operation(params.line, params.column, "!=", t[1], t[3])
+
+
+def p_expression_different(t):
+    """expression : expression DIF expression"""
+    params = get_params(t)
+    t[0] = Operation(params.line, params.column, "!=", t[1], t[3])
+
+
+def p_expression_greater(t):
+    """expression : expression GREATER expression"""
+    params = get_params(t)
+    t[0] = Operation(params.line, params.column, ">", t[1], t[3])
+
+
+def p_expression_greater_equal(t):
+    """expression : expression GREATER_E expression"""
+    params = get_params(t)
+    t[0] = Operation(params.line, params.column, ">=", t[1], t[3])
+
+
+def p_expression_less(t):
+    """expression : expression LESS expression"""
+    params = get_params(t)
+    t[0] = Operation(params.line, params.column, "<", t[1], t[3])
+
+
+def p_expression_less_equal(t):
+    """expression : expression LESS_E expression"""
+    params = get_params(t)
+    t[0] = Operation(params.line, params.column, "<=", t[1], t[3])
+
+
+
 def p_expression_group(t):
     """expression : L_PAR expression R_PAR"""
     t[0] = t[2]
@@ -300,6 +392,8 @@ def p_expression_primitive(t):
     """expression : NUMBER
                 | STRING
                 | FLOAT
+                | CHAR
+                | BOOLEAN
                 | listArray"""
     t[0] = t[1]
 

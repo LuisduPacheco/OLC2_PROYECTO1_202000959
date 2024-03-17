@@ -25,9 +25,9 @@ class Operation(Expression):
         dominant_type = dominant_table[op1.type.value][op2.type.value]
 
         if self.operator == "+":
-            #if dominant_type == ExpressionType.NUMBER or dominant_type == ExpressionType.FLOAT or dominant_type == ExpressionType.STRING:
-            op_symbol = Symbol(self.line, self.column, op1.value + op2.value, dominant_type)
-            return op_symbol
+            if dominant_type == ExpressionType.NUMBER or dominant_type == ExpressionType.FLOAT or dominant_type == ExpressionType.STRING:
+                op_symbol = Symbol(self.line, self.column, op1.value + op2.value, dominant_type)
+                return op_symbol
 
         if self.operator == "-":
             if dominant_type == ExpressionType.NUMBER or dominant_type == ExpressionType.FLOAT:
@@ -45,6 +45,29 @@ class Operation(Expression):
             if dominant_type == ExpressionType.NUMBER or dominant_type == ExpressionType.FLOAT:
                 return Symbol(self.line, self.column, op1.value / op2.value, dominant_type)
             print("Error: incorrect types to multiply.")
+
+        if self.operator == "%":
+            if dominant_type == ExpressionType.NUMBER:
+                return Symbol(self.line, self.column, op1.value % op2.value, dominant_type)
+            print("Error: incorrect types to modulo operation.")
+
+        if self.operator == "==":
+            return Symbol(self.line, self.column, op1.value == op2.value, dominant_type)
+
+        if self.operator == "!=":
+            return Symbol(self.line, self.column, op1.value != op2.value, dominant_type)
+
+        if self.operator == ">":
+            return Symbol(self.line, self.column, op1.value > op2.value, dominant_type)
+
+        if self.operator == "<":
+            return Symbol(self.line, self.column, op1.value < op2.value, dominant_type)
+
+        if self.operator == ">=":
+            return Symbol(self.line, self.column, op1.value >= op2.value, dominant_type)
+
+        if self.operator == "<=":
+            return Symbol(self.line, self.column, op1.value <= op2.value, dominant_type)
 
         return Symbol(self.line, self.column, None, ExpressionType.NULL)
 

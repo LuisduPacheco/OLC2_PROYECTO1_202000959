@@ -12,4 +12,5 @@ class ExpressionType(Enum):
     BREAK = 7
     CONTINUE = 8
     RETURN = 9
+    CHAR = 10
     

@@ -61,6 +61,19 @@ class Environment:
         ast.set_errors(f"The variable {identifier} doesn't exist.")
         return Symbol(0,0, None, ExpressionType.NULL)
 
+    def increase_variable(self, ast, identifier, symbol_var):
+        variable = self.get_variable(ast, identifier)
+        variable.value = variable.value + symbol_var.value
+        print(variable.value)
+        return variable
+
+    def decrease_variable(self, ast, identifier, symbol_var):
+        variable = self.get_variable(ast, identifier)
+        if symbol_var.type == ExpressionType.NUMBER or symbol_var.type == ExpressionType.FLOAT:
+            variable.value = variable.value - symbol_var.value
+            print(variable.value)
+            return variable
+
     def loop_validation(self):
         temp_env = self
         while True:
