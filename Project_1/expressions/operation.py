@@ -21,8 +21,11 @@ class Operation(Expression):
 
     def execute(self, ast, env):
         op1 = self.op_left.execute(ast, env)
-        op2 = self.op_right.execute(ast, env)
-        dominant_type = dominant_table[op1.type.value][op2.type.value]
+        if self.op_right is not None:
+            op2 = self.op_right.execute(ast, env)
+            dominant_type = dominant_table[op1.type.value][op2.type.value]
+        else:
+            pass
 
         if self.operator == "+":
             if dominant_type == ExpressionType.NUMBER or dominant_type == ExpressionType.FLOAT or dominant_type == ExpressionType.STRING:
@@ -52,22 +55,43 @@ class Operation(Expression):
             print("Error: incorrect types to modulo operation.")
 
         if self.operator == "==":
-            return Symbol(self.line, self.column, op1.value == op2.value, dominant_type)
+            return Symbol(self.line, self.column, op1.value == op2.value, ExpressionType.BOOLEAN)
 
         if self.operator == "!=":
-            return Symbol(self.line, self.column, op1.value != op2.value, dominant_type)
+            return Symbol(self.line, self.column, op1.value != op2.value, ExpressionType.BOOLEAN)
 
         if self.operator == ">":
-            return Symbol(self.line, self.column, op1.value > op2.value, dominant_type)
+            return Symbol(self.line, self.column, op1.value > op2.value, ExpressionType.BOOLEAN)
 
         if self.operator == "<":
-            return Symbol(self.line, self.column, op1.value < op2.value, dominant_type)
+            return Symbol(self.line, self.column, op1.value < op2.value, ExpressionType.BOOLEAN)
 
         if self.operator == ">=":
-            return Symbol(self.line, self.column, op1.value >= op2.value, dominant_type)
+            return Symbol(self.line, self.column, op1.value >= op2.value, ExpressionType.BOOLEAN)
 
-        if self.operator == "<=":
-            return Symbol(self.line, self.column, op1.value <= op2.value, dominant_type)
+        if self.operator == "&&":
+            if op1.type == ExpressionType.BOOLEAN and op2.type == ExpressionType.BOOLEAN:
+                print("Boolean and")
+                return Symbol(self.line, self.column, op1.value and op2.value, dominant_type)
+            else:
+                print(f"The types to compare should be 'boolean'")
+                ast.set_errors(f"The types to compare should be 'boolean'")
+
+        if self.operator == "||":
+            if op1.type == ExpressionType.BOOLEAN and op2.type == ExpressionType.BOOLEAN:
+                print("Boolean OR")
+                return Symbol(self.line, self.column, op1.value or op2.value, ExpressionType.BOOLEAN)
+            else:
+                print(f"The types to compare should be 'boolean'")
+                ast.set_errors(f"The types to compare should be 'boolean'")
+
+        if self.operator == "!":
+            if op1.type == ExpressionType.BOOLEAN:
+                print("Boolean negate")
+                return Symbol(self.line, self.column, not op1.value, ExpressionType.BOOLEAN)
+            else:
+                print(f"The type should be 'boolean'.")
+                ast.set_errors(f"The types to compare should be 'boolean'")
 
         return Symbol(self.line, self.column, None, ExpressionType.NULL)
 

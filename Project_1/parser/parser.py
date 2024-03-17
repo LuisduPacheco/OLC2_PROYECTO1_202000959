@@ -69,7 +69,8 @@ tokens: list[str] = [
                         'OR',
                         'ID',
                         'MODULO',
-                        'SUB_ASSIGN'
+                        'SUB_ASSIGN',
+                        'NEGATE'
                     ] + list(reserved_words.values())
 
 t_ADD_ASSIGN = r'[+][=]'
@@ -98,6 +99,7 @@ t_AND = r'&&'
 t_OR = r'\|\|'
 t_MODULO = r'%'
 t_SUB_ASSIGN = r'\-='
+t_NEGATE = r'\!'
 
 def t_STRING(t):
     r"""\"(.+?)\""""
@@ -381,6 +383,23 @@ def p_expression_less_equal(t):
     params = get_params(t)
     t[0] = Operation(params.line, params.column, "<=", t[1], t[3])
 
+
+def p_expression_and(t):
+    """expression : expression AND expression"""
+    params = get_params(t)
+    t[0] = Operation(params.line, params.column, "&&", t[1], t[3])
+
+
+def p_expression_or(t):
+    """expression : expression OR expression"""
+    params = get_params(t)
+    t[0] = Operation(params.line, params.column, "||", t[1], t[3])
+
+
+def p_expression_negate(t):
+    """expression : NEGATE expression"""
+    params = get_params(t)
+    t[0] = Operation(params.line, params.column, "!", t[2], None)
 
 
 def p_expression_group(t):

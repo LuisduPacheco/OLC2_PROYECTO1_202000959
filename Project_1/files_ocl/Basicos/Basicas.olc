@@ -28,7 +28,7 @@ var f: boolean = true;
 var j: number = 10;
 var k: number = 10;
 
-console.log((a > b || b < c));
+console.log((a > b) || (b < c));
 
 console.log((a == b && j == k) || 14 != c);
 
