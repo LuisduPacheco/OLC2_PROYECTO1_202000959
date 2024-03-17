@@ -15,6 +15,7 @@ from environment.types import ExpressionType
 from instructions.print import Print
 from instructions.declaration import Declaration
 from instructions.declare_constants import Constants
+from instructions.if_instruction import IfInstruction
 
 class codeParams:
     def __init__(self, line, column):
@@ -34,6 +35,7 @@ reserved_words: dict[str, str] = {
     'char': 'CHAR',
     'boolean': 'BOOLEAN',
     'if': 'IF',
+    'else': 'ELSE',
     'while': 'WHILE',
     'break': 'BREAK',
     'continue': 'CONTINUE',
@@ -226,6 +228,7 @@ def p_instruction_block(t):
 
 def p_instruction_list(t):
     """instruction : print
+                | if_instruction
                 | declaration
                 | assignment"""
     t[0] = t[1]
@@ -235,6 +238,24 @@ def p_instruction_console(t):
     """print : CONSOLE DOT LOG L_PAR expressionList R_PAR SEMICOLON"""
     params = get_params(t)
     t[0] = Print(params.line, params.column, t[5])
+
+
+def p_instruction_if(t):
+    """if_instruction : IF L_PAR expression R_PAR L_KEY block R_KEY
+                      | if_instruction else_if_instruction"""
+    if len(t) == 8:
+        params = get_params(t)
+        t[0] = IfInstruction(params.line, params.column, t[3], t[6])
+    else:  # If it's an else if
+        t[1].else_block = [t[2]]  # Wrap else if in a list
+        t[0] = t[1]
+
+
+
+def p_else_if_instruction(t):
+    """else_if_instruction : ELSE IF L_PAR expression R_PAR L_KEY block R_KEY"""
+    params = get_params(t)
+    t[0] = IfInstruction(params.line, params.column, t[4], t[7])
 
 
 def p_instruction_declaration(t):
