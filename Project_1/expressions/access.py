@@ -13,7 +13,9 @@ class Access(Expression):
         # Search in the environment
         print(self.identifier)
         if self.identifier in env.table:
-            return env.get_variable(ast, self.identifier)
+            sym = env.get_variable(ast, self.identifier)
+            return sym
         if self.identifier in env.constants:
-            return env.get_constant(ast, self.identifier)
+            sym = env.get_constant(ast, self.identifier)
+            return sym
 

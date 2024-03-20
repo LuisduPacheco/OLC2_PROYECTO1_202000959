@@ -24,6 +24,6 @@ class ArrayAccess(Expression):
         if index_value.type != ExpressionType.NUMBER:
             ast.set_errors('Index must be an integer, incorrect value.')
             return
-        return sym.value[index_value]
+        return sym.value[index_value.value]
 
 

@@ -3,11 +3,15 @@ from environment.symbol import Symbol
 from interfaces.expression import Expression
 
 dominant_table = [
-    [ExpressionType.NUMBER, ExpressionType.FLOAT, ExpressionType.STRING, ExpressionType.NULL, ExpressionType.NULL],
-    [ExpressionType.FLOAT, ExpressionType.FLOAT, ExpressionType.STRING, ExpressionType.NULL, ExpressionType.NULL],
-    [ExpressionType.STRING, ExpressionType.STRING, ExpressionType.STRING, ExpressionType.STRING, ExpressionType.NULL],
-    [ExpressionType.NULL, ExpressionType.NULL, ExpressionType.STRING, ExpressionType.BOOLEAN, ExpressionType.NULL],
-    [ExpressionType.NULL, ExpressionType.NULL, ExpressionType.NULL, ExpressionType.NULL, ExpressionType.NULL],
+    [ExpressionType.NUMBER, ExpressionType.FLOAT,  ExpressionType.STRING, ExpressionType.NULL,    ExpressionType.NULL],
+    [ExpressionType.FLOAT,   ExpressionType.FLOAT,  ExpressionType.STRING, ExpressionType.NULL,    ExpressionType.NULL],
+    [ExpressionType.STRING,  ExpressionType.STRING, ExpressionType.STRING, ExpressionType.STRING,  ExpressionType.NULL],
+    [ExpressionType.NULL,    ExpressionType.NULL,   ExpressionType.STRING, ExpressionType.BOOLEAN, ExpressionType.NULL],
+    [ExpressionType.NULL,    ExpressionType.NULL,   ExpressionType.NULL,   ExpressionType.NULL,    ExpressionType.NULL],
+    [ExpressionType.NULL,    ExpressionType.NULL,   ExpressionType.NULL,   ExpressionType.NULL,    ExpressionType.NULL],
+    [ExpressionType.NULL,    ExpressionType.NULL,   ExpressionType.NULL,   ExpressionType.NULL,    ExpressionType.NULL],
+    [ExpressionType.NULL,    ExpressionType.NULL,   ExpressionType.NULL,   ExpressionType.NULL,    ExpressionType.NULL],
+    [ExpressionType.NULL,    ExpressionType.NULL,   ExpressionType.NULL,   ExpressionType.NULL,    ExpressionType.NULL],
 ]
 
 
@@ -21,33 +25,38 @@ class Operation(Expression):
 
     def execute(self, ast, env):
         op1 = self.op_left.execute(ast, env)
+        op2 = None
+        dominant_type = ExpressionType.NULL
         if self.op_right is not None:
             op2 = self.op_right.execute(ast, env)
             dominant_type = dominant_table[op1.type.value][op2.type.value]
-        else:
-            pass
+        elif self.operator == '!':
+            dominant_type = ExpressionType.BOOLEAN
 
         if self.operator == "+":
-            if dominant_type == ExpressionType.NUMBER or dominant_type == ExpressionType.FLOAT or dominant_type == ExpressionType.STRING:
-                op_symbol = Symbol(self.line, self.column, op1.value + op2.value, dominant_type)
-                return op_symbol
+            op_symbol = Symbol(self.line, self.column, op1.value + op2.value, dominant_type)
+            return op_symbol
 
         if self.operator == "-":
             if dominant_type == ExpressionType.NUMBER or dominant_type == ExpressionType.FLOAT:
                 return Symbol(self.line, self.column, op1.value - op2.value, dominant_type)
             print("Error: incorrect types to subtract.")
+            ast.set_errors("Error: incorrect types to subtract.")
 
         if self.operator == "*":
             if dominant_type == ExpressionType.NUMBER or dominant_type == ExpressionType.FLOAT:
                 return Symbol(self.line, self.column, op1.value * op2.value, dominant_type)
             print("Error: incorrect types to multiply.")
+            ast.set_errors("Error: incorrect types to multiply.")
 
         if self.operator == "/":
             if op2.value == 0 or op2.value == 0.0:
                 ast.set_errors("Error: Can not divided by 0.")
+                return
             if dominant_type == ExpressionType.NUMBER or dominant_type == ExpressionType.FLOAT:
                 return Symbol(self.line, self.column, op1.value / op2.value, dominant_type)
-            print("Error: incorrect types to multiply.")
+            print("Error: incorrect types to divide.")
+            ast.set_errors("Error: incorrect types to divide.")
 
         if self.operator == "%":
             if dominant_type == ExpressionType.NUMBER:

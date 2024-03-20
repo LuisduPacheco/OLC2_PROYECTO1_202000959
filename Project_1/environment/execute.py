@@ -13,4 +13,7 @@ def statement_executor(instruction_list, ast, env):
             if result.type == ExpressionType.RETURN:
                 return result.value
             return result
+    return None
+
+
 

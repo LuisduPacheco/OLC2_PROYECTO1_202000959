@@ -1,21 +1,33 @@
-from expressions.Increase import Increase
-from expressions.decrease import Decrease
-from instructions.assignment import Assignment
+from expressions.continue_statement import ContinueStatement
+from instructions.array_declaration import ArrayDeclaration
+from instructions.function_statement import FunctionStatement
+from instructions.interface import Interface
+from instructions.interface_declaration import InterfaceDeclaration
 from ply import lex as Lex
 from ply import yacc as yacc
 
 
+from expressions.Increase import Increase
+from expressions.break_statement import BreakStatement
+from expressions.decrease import Decrease
 from expressions.access import Access
 from expressions.primitive import Primitive
 from expressions.operation import Operation
 from expressions.array_access import ArrayAccess
 from expressions.array import Array
+from expressions.return_statement import ReturnStatement
+from expressions.call import Call
+from expressions.interface_access import InterfaceAccess
+
 from environment.types import ExpressionType
 
 from instructions.print import Print
 from instructions.declaration import Declaration
 from instructions.declare_constants import Constants
 from instructions.if_instruction import IfInstruction
+from instructions.assignment import Assignment
+from instructions.while_instruction import WhileInstruction
+
 
 class codeParams:
     def __init__(self, line, column):
@@ -39,7 +51,9 @@ reserved_words: dict[str, str] = {
     'while': 'WHILE',
     'break': 'BREAK',
     'continue': 'CONTINUE',
-    'return': 'RETURN'
+    'return': 'RETURN',
+    'func': 'FUNC',
+    'interface': 'INTERFACE'
 }
 
 tokens: list[str] = [
@@ -210,7 +224,7 @@ precedence = (
 )
 
 
-#START
+# START
 def p_start(t):
     """s : block"""
     t[0] = t[1]
@@ -229,8 +243,18 @@ def p_instruction_block(t):
 def p_instruction_list(t):
     """instruction : print
                 | if_instruction
+                | while_instruction
                 | declaration
-                | assignment"""
+                | array_declaration
+                | assignment
+                | break_statement
+                | continue_statement
+                | functions_statement
+                | call
+                | return_statement
+                | interface_creation
+                | interface_declaration
+                """
     t[0] = t[1]
 
 
@@ -241,21 +265,16 @@ def p_instruction_console(t):
 
 
 def p_instruction_if(t):
-    """if_instruction : IF L_PAR expression R_PAR L_KEY block R_KEY
-                      | if_instruction else_if_instruction"""
+    """if_instruction : IF L_PAR expression R_PAR L_KEY block R_KEY"""
     if len(t) == 8:
         params = get_params(t)
         t[0] = IfInstruction(params.line, params.column, t[3], t[6])
-    else:  # If it's an else if
-        t[1].else_block = [t[2]]  # Wrap else if in a list
-        t[0] = t[1]
 
 
-
-def p_else_if_instruction(t):
-    """else_if_instruction : ELSE IF L_PAR expression R_PAR L_KEY block R_KEY"""
+def p_instruction_while(t):
+    """while_instruction : WHILE L_PAR expression R_PAR L_KEY block R_KEY """
     params = get_params(t)
-    t[0] = IfInstruction(params.line, params.column, t[4], t[7])
+    t[0] = WhileInstruction(params.line, params.column, t[3], t[6])
 
 
 def p_instruction_declaration(t):
@@ -276,6 +295,12 @@ def p_instruction_declaration_type(t):
     t[0] = Declaration(params.line, params.column, t[2], t[4], None)
 
 
+def p_instruction_array_declaration(t):
+    """array_declaration : VAR ID COLON type L_BRACKET R_BRACKET EQUAL expression SEMICOLON"""
+    params = get_params(t)
+    t[0] = ArrayDeclaration(params.line, params.column, t[2], t[4], t[8])
+
+
 def p_instruction_declare_constants(t):
     """declaration : CONST ID COLON type EQUAL expression SEMICOLON
                     | CONST ID EQUAL expression SEMICOLON
@@ -286,6 +311,25 @@ def p_instruction_declare_constants(t):
     elif len(t) == 6:
         params = get_params(t)
         t[0] = Constants(params.line, params.column, t[2], None, t[4])
+
+
+def p_instruction_interface_declaration(t):
+    """interface_declaration : VAR ID COLON ID EQUAL L_KEY interface_content R_KEY SEMICOLON"""
+    params = get_params(t)
+    t[0] = InterfaceDeclaration(params.line, params.column, t[2], t[4], t[7])
+
+
+def p_instruction_interface_content(t):
+    """interface_content : interface_content COMMA ID COLON expression
+                        | ID COLON expression"""
+    arr = []
+    if len(t) > 5:
+        param = {t[3]: t[5]}
+        arr = t[1] + [param]
+    else:
+        param = {t[1] : t[3]}
+        arr.append(param)
+    t[0] = arr
 
 
 def p_instruction_assignment(t):
@@ -299,6 +343,95 @@ def p_instruction_assignment(t):
         t[0] = Increase(params.line, params.column, t[1], t[3])
     elif t[2] == "-=":
         t[0] = Decrease(params.line, params.column, t[1], t[3])
+
+
+def p_instruction_return(t):
+    """return_statement : RETURN expression SEMICOLON
+                        | RETURN SEMICOLON"""
+    params = get_params(t)
+    if len(t) > 3:
+        t[0] = ReturnStatement(params.line, params.column, t[2])
+    else:
+        t[0] = ReturnStatement(params.line, params.column, None)
+
+
+def p_instruction_call_function(t):
+    """call : ID L_PAR expressionList R_PAR SEMICOLON
+            | ID L_PAR R_PAR SEMICOLON"""
+    params = get_params(t)
+    if len(t) > 5:
+        t[0] = Call(params.line, params.column, t[1], t[3])
+    else:
+        t[0] = Call(params.line, params.column, t[1], [])
+        
+
+def p_instruction_function(t):
+    """functions_statement : FUNC ID func_params func_type L_KEY block R_KEY"""
+    params = get_params(t)
+    t[0] = FunctionStatement(params.line, params.column, t[2], t[3], t[4], t[6])
+
+
+def p_instruction_function_params_list(t):
+    """func_params : L_PAR params_list R_PAR
+                    | L_PAR R_PAR"""
+    if len(t) > 3:
+        t[0] = t[2]
+    else:
+        t[0] = []
+
+
+def p_instruction_interface_creation(t):
+    """interface_creation : INTERFACE ID L_KEY attribute_list R_KEY SEMICOLON"""
+    params = get_params(t)
+    t[0] = Interface(params.line, params.column, t[2], t[4])
+
+
+def p_instruction_interface_attribute(t):
+    """attribute_list : attribute_list ID COLON type SEMICOLON
+                    | ID COLON type SEMICOLON"""
+    arr = []
+    if len(t) > 5:
+        param = {t[2]: t[4]}
+        arr = t[1] + [param]
+    else:
+        param = {t[1]: t[3]}
+        arr.append(param)
+    t[0] = arr
+
+
+def p_expression_param_list(t):
+    """params_list : params_list COMMA ID COLON type
+                | ID COLON type"""
+    arr = []
+    if len(t) > 5:
+        param = {t[3]: t[5]}
+        arr = t[1] + [param]
+    else:
+        param = {t[1] : t[3]}
+        arr.append(param)
+    t[0] = arr
+
+
+def p_instruction_function_type(t):
+    """func_type : COLON type
+                | """
+    if len(t) > 2:
+        t[0] = t[2]
+    else:
+        t[0] = ExpressionType.NULL
+
+
+def p_instruction_break(t):
+    """break_statement : BREAK SEMICOLON"""
+    params = get_params(t)
+    t[0] = BreakStatement(params.line, params.column)
+
+
+def p_instruction_continue(t):
+    """continue_statement : CONTINUE SEMICOLON"""
+    params = get_params(t)
+    t[0] = ContinueStatement(params.line, params.column)
+
 
 def p_type_production(t):
     """type : NUMBER
@@ -367,12 +500,6 @@ def p_expression_equal(t):
     """expression : expression EQEQUAL expression"""
     params = get_params(t)
     t[0] = Operation(params.line, params.column, "==", t[1], t[3])
-
-
-def p_expression_different(t):
-    """expression : expression DIF expression"""
-    params = get_params(t)
-    t[0] = Operation(params.line, params.column, "!=", t[1], t[3])
 
 
 def p_expression_different(t):
@@ -452,7 +579,7 @@ def p_expression_list_array(t):
     if len(t) > 4:
         t[0] = ArrayAccess(params.line, params.column, t[1], t[3])
     elif len(t) > 3:
-        print("ToDo: Interface Access")
+        t[0] = InterfaceAccess(params.line, params.column, t[1], t[3])
     else:
         t[0] = Access(params.line, params.column, t[1])
 

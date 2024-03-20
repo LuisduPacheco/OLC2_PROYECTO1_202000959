@@ -29,17 +29,17 @@ class Environment:
         ast.set_errors(f'The variable "{identifier}" does not exist.')
         return Symbol(0, 0, None, ExpressionType.NULL)
 
-    def save_variable(self, ast, identifier, symbol) -> None:
+    def save_variable(self, ast, identifier, symbol):
         if identifier in self.table:
             ast.set_errors(f'The variable "{identifier}" already exists.')
             return
         self.table[identifier] = symbol
 
     def get_variable(self, ast, identifier) -> Symbol:
-        temporal_env: Environment = self
+        temporal_env = self
         while True:
-            if identifier in self.table:
-                return self.table[identifier]
+            if identifier in temporal_env.table:
+                return temporal_env.table[identifier]
             if temporal_env.previous is None:
                 break
             else:
@@ -68,11 +68,51 @@ class Environment:
         return variable
 
     def decrease_variable(self, ast, identifier, symbol_var):
-        variable = self.get_variable(ast, identifier)
+        Variable = self.get_variable(ast, identifier)
         if symbol_var.type == ExpressionType.NUMBER or symbol_var.type == ExpressionType.FLOAT:
-            variable.value = variable.value - symbol_var.value
-            print(variable.value)
-            return variable
+            if Variable.type == ExpressionType.NULL:
+                Variable.type = symbol_var.type
+                Variable.value = Variable.value - symbol_var.value
+            else:
+                Variable.value = Variable.value - symbol_var.value
+            print(Variable.value)
+            return Variable
+
+    def save_function(self, ast, identifier, function):
+        if identifier in self.functions:
+            ast.setErrors(f"There is already a function with the name {identifier}")
+            return
+        self.functions[identifier] = function
+
+    def get_function(self, ast, identifier):
+        tmp_env = self
+        while True:
+            if identifier in tmp_env.functions:
+                return tmp_env.functions[identifier]
+            if tmp_env.previous is None:
+                break
+            else:
+                tmp_env = tmp_env.previous
+        ast.setErrors(f"The function {identifier} does not exist.")
+        return {}
+
+    def save_struct(self, ast, identifier, struct):
+        if identifier in self.interfaces:
+            ast.setErrors(f"There is already a interface with the name {identifier}")
+            return
+        self.interfaces[identifier] = struct
+
+    def get_struct(self, ast, identifier):
+        tmp_env = self
+        while True:
+            if identifier in tmp_env.interfaces:
+                return tmp_env.interfaces[identifier]
+            if tmp_env.previous is None:
+                break
+            else:
+                tmp_env = tmp_env.previous
+        ast.setErrors(f"The interface {identifier} does not exist.")
+        return None
 
     def loop_validation(self):
         temp_env = self
@@ -85,3 +125,21 @@ class Environment:
                 temp_env = temp_env.previous
         return False
 
+    def FunctionValidation(self):
+        temp_env = self
+        while True:
+            if 'FUNCTION_' in temp_env.identifier:
+                return True
+            if temp_env.previous is None:
+                break
+            else:
+                temp_env = temp_env.previous
+        return False
+
+    def get_global_environment(self):
+        tmp_env = self
+        while True:
+            if tmp_env.previous is None:
+                return tmp_env
+            else:
+                tmp_env = tmp_env.previous

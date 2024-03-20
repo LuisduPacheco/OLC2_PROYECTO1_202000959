@@ -30,7 +30,7 @@ var k: number = 10;
 
 console.log((a > b) || (b < c));
 
-console.log((a == b && j == k) || 14 != c);
+console.log((a == b) && (j == k) || (14 != c));
 
 var val: number = 5;
 var resp: number = 5;
